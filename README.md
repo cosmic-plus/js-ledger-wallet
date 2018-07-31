@@ -66,7 +66,7 @@ In your HTML pages:
   ...
     <!-- Best placed at the end of body to not delay page loading -->
     <script src="https://unpkg.com/stellar-sdk/dist/stellar-sdk.min.js"></script>
-    <script src="https://raw.githubusercontent.com/MisterTicot/web-stellar-ledger-wallet/master/ledger-wallet.js"></script>
+    <script src="https://raw.github.com/MisterTicot/web-stellar-ledger-wallet/master/ledger-wallet.js"></script>
   </body>
 ```
 

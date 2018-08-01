@@ -9,7 +9,7 @@ This is a wrapper around the official Ledger libraries for Stellar:
 Ledger wallets support may be a bit tricky to implement because it doesn't 
 require the same libraries whether you're on Node.js or in web browser. Also, 
 it requires [quite a few lines of 
-code](https://github.com/MisterTicot/js-stellar-ledger-wallet/src/ledger.js) 
+code](https://github.com/MisterTicot/js-stellar-ledger-wallet/blob/master/src/ledger.js)
 and does't give much clue about how bip path should be handled.
 
 This library is solving that by loading the right dependencies automatically and
@@ -29,7 +29,7 @@ compatibility-breaking way.
 Please don't use it in production yet. Please consider yourself a tester and 
 report any issue or doubt you may encounter while using this software.
 
-The beta release will be announced on [Galactic Talk](https://galactictalk.com).
+The beta release will be announced on [Galactic Talk](https://galactictalk.org).
 
 ## Install
 
@@ -123,7 +123,7 @@ ledgerWallet.sign(transaction)
 
 ### More complex bip pathes
 
-Optionaly you can pass the account index and internal flag:
+Optionally you can pass the account index and internal flag:
 
 ```js
 // ledgerWallet.connect([accountNumber], [accountIndex], [internalFlag])
@@ -146,12 +146,12 @@ Once connection is established:
 
 Other available data:
 
-* Stellar app version: ledgerWallet.version
-* Bip path: ledgerWallet.path
+* Stellar app version: `ledgerWallet.version`
+* Bip path: `ledgerWallet.path`
 
 Underlying components:
 
-* Ledger Transport instance: ledgerWallet.transport
-* Ledger Str App instance: ledgerWallet.application
+* Ledger Transport instance: `ledgerWallet.transport`
+* Ledger Str App instance: `ledgerWallet.application`
 
 ## That's all Folks :)

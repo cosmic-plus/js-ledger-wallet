@@ -20,8 +20,8 @@ const ledger = {}
  * Environment detection and library loading.
  */
 
-const isBrowser = new Function("try { return this === window } catch (e) { return false }")
-const isNode = new Function("try { return this === global } catch (e) { return false }")
+const isBrowser = new Function('try { return this === window } catch (e) { return false }')
+const isNode = new Function('try { return this === global } catch (e) { return false }')
 
 const StellarApp = require('@ledgerhq/hw-app-str').default
 let Transport, Sdk
@@ -37,7 +37,7 @@ if (isBrowser()) {
   Transport = stealth_require('@ledgerhq/hw-transport-node-hid').default
   Sdk = stealth_require('stellar-sdk')
 } else {
-  throw new Error ('Your environment is not supported by stellar-ledger-wallet library.')
+  throw new Error('Your environment is not supported by stellar-ledger-wallet library.')
 }
 
 /**
@@ -98,7 +98,7 @@ async function connect (path) {
       if (!ledger.transport) {
         ledger.transport = await Transport.create()
         /// Never triggered.
-        //ledger.transport.on('disconnect', onDisconnect)
+        // ledger.transport.on('disconnect', onDisconnect)
       }
       if (!ledger.application) {
         ledger.application = new StellarApp(ledger.transport)
@@ -121,14 +121,13 @@ function timeout (x) {
 
 /**
  * OnDisconnect
- * 
+ *
  * This doesn't works as Ledger library never call it
  */
 function onDisconnect () {
   reset()
-  if (typeof ledger.onDisconnect === 'function') ledger.onDisconnect()  
+  if (typeof ledger.onDisconnect === 'function') ledger.onDisconnect()
 }
-
 
 /**
  * Disconnect
@@ -146,7 +145,6 @@ function reset () {
     'internalFlag', 'version', 'publicKey']
   fields.forEach(name => ledger[name] = undefined)
 }
-
 
 /**
  * Sign

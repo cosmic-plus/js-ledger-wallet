@@ -1,6 +1,6 @@
 {
   "name": "stellar-ledger-wallet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets",
   "main": "src/ledger.js",
   "scripts": {

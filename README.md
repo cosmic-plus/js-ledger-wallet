@@ -6,28 +6,23 @@ This is a wrapper around the official Ledger libraries for Stellar:
 * [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js only
 * [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser only
 
-Ledger wallets support may be a bit tricky to implement because it doesn't 
+Ledger wallet support may be a bit tricky to implement because it doesn't
 require the same libraries whether you're on Node.js or in web browser. Also, 
 it requires [quite a few lines of 
-code](https://github.com/MisterTicot/js-stellar-ledger-wallet/blob/master/src/ledger.js)
+code](https://github.com/MisterTicot/js-stellar-ledger-wallet/blob/master/src/ledger.js) 
 and does't give much clue about how bip path should be handled.
 
 This library is solving that by loading the right dependencies automatically and
-providing a few simple on-liners. When it is packed into a bundle, only the web
-support is thrown in.
+providing a few simple on-liners.
 
 *Disclaimer:* This library is developped independently from the Stellar 
 Foundation and Ledger.
 
 ## This is an alpha release
 
-While the implemented features are supposed to work just fine, this library
-have not been sufficiently tested to ensure reliability. Moreover, the
-methods it exports may be subject to future modification in a
-compatibility-breaking way.
-
-Please don't use it in production yet. Please consider yourself a tester and 
-report any issue or doubt you may encounter while using this software.
+The exported methods may be subject to modifications in a 
+compatibility-breaking way. Please consider yourself a tester and report any 
+issue or doubt you may encounter while using this software.
 
 The beta release will be announced on [Galactic Talk](https://galactictalk.org).
 
@@ -77,13 +72,13 @@ libraries.
 
 ### Connect to a Ledger wallet
 
-This will try to connect until you call the disconnect method or until 
+This will try to connect until you call the disconnect method or until the
 connection is established. Returns a *Promise* that will resolve when this 
-happens and will reject in browser environment when the Ledger wallet can't be
-supported
+happens or will reject in browser environment when the Ledger wallet can't be
+supported.
 
 ```js
-/// ledgerWallet.connect(accountNumber)
+/// ledgerWallet.connect([accountNumber])
 ledgerWallet.connect(0)
   .then(function () { console.log('Ledger Wallet connected') })
   .catch(console.error)
@@ -97,7 +92,7 @@ keep using the same account number.
 
 ### Disconnect
 
-Close open connection and stop any running connection attempt.
+Close open connection / prevent any further connection attempt.
 
 ```js
 ledgerWallet.disconnect()
@@ -121,7 +116,16 @@ ledgerWallet.sign(transaction)
   .catch(console.error)
 ```
 
-### More complex bip pathes
+### onConnect / onDisconnect event handlers
+
+You can set handlers that will be called on device connection and disconnection.
+
+```js
+ledgerWallet.onConnect = myConnectionHandler
+ledgerWallet.onDisconnect = myDisconnectionHandler
+```
+
+### Advanced bip pathes
 
 Optionally you can pass the account index and internal flag:
 
@@ -142,11 +146,10 @@ the same values but without internal flag.
 
 ### Misc
 
-Once connection is established:
-
-Other available data:
+Other available data (once connection is established):
 
 * Stellar app version: `ledgerWallet.version`
+* Hash signing app option (updated each second): `ledgerWallet.multiOpsEnabled`
 * Bip path: `ledgerWallet.path`
 
 Underlying components:

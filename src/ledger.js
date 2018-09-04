@@ -2,10 +2,15 @@
  * async ledgerWallet.connect([accountNumber], [accountIndex], [internalFlag])
  * ledgerWallet.disconnect()
  *
+ * // Events
+ * ledgerWallet.onConnect => function ()
+ * ledgerWallet.onDisconnect => function ()
+ *
  * // After connection succeed
  * async ledgerWallet.sign(transaction)
  * ledgerWallet.publicKey
  * ledgerWallet.version
+ * ledgerWallet.multiOpsEnabled
  * ledgerWallet.account
  * ledgerWallet.path
  * ledgerWallet.application
@@ -95,17 +100,11 @@ async function connect (path) {
   /// Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
-      if (!ledger.transport) {
-        ledger.transport = await Transport.create()
-        /// Never triggered.
-        // ledger.transport.on('disconnect', onDisconnect)
-      }
-      if (!ledger.application) {
-        ledger.application = new StellarApp(ledger.transport)
-        const config = await ledger.application.getAppConfiguration()
-        ledger.version = config.version
-      }
+      if (!ledger.transport) ledger.transport = await Transport.create()
+      if (!ledger.application) ledger.application = new StellarApp(ledger.transport)
+      /// Set ledger.publicKey
       Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
+      onConnect()
     } catch (error) {
       ledger.error = error
       if (error.id === 'U2FNotSupported') throw error
@@ -120,29 +119,74 @@ function timeout (x) {
 }
 
 /**
+ * onConnect
+ */
+ledger.onConnect = null
+async function onConnect () {
+  console.log('Ledger connected')
+  await refreshAppConfiguration()
+  if (typeof ledger.onConnect === 'function') ledger.onConnect()
+  if (!isPolling) polling()
+}
+
+/**
  * OnDisconnect
  *
  * This doesn't works as Ledger library never call it
  */
+ledger.onDisconnect = null
 function onDisconnect () {
+  console.log('Ledger disconnected')
   reset()
   if (typeof ledger.onDisconnect === 'function') ledger.onDisconnect()
+}
+
+/**
+ * Polling
+ */
+const pollingDelay = 1000
+let ping = false, isPolling = false
+async function polling () {
+  console.log('Start polling')
+  isPolling = true
+  const thisApplication = ledger.application
+  while (thisApplication === ledger.application) {
+    ping = false
+    refreshAppConfiguration()
+    await timeout(pollingDelay)
+    /// Timeout
+    if (ping === false) await ledger.disconnect()
+  }
+  console.log('Stop polling')
+}
+
+async function refreshAppConfiguration () {
+  try {
+    /// Refresh ledger.multiOpsEnabled.
+    Object.assign(ledger, await ledger.application.getAppConfiguration())
+    ping = true
+  } catch (error) {
+    if (error.currentLock === 'signTransaction') ping = true
+  }
 }
 
 /**
  * Disconnect
  */
 
-ledger.disconnect = function () {
-  if (ledger.transport) disconnection = ledger.transport.close()
-  reset()
-  return disconnection
+ledger.disconnect = async function () {
+  isPolling = false
+  if (ledger.transport) {
+    disconnection = ledger.transport.close()
+    disconnection.then(onDisconnect)
+    return disconnection
+  }
 }
 
 function reset () {
   connection = null
   const fields = ['transport', 'application', 'path', 'account', 'index',
-    'internalFlag', 'version', 'publicKey']
+    'internalFlag', 'version', 'publicKey', 'multiOpsEnabled']
   fields.forEach(name => ledger[name] = undefined)
 }
 

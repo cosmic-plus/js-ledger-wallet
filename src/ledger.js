@@ -25,18 +25,18 @@ const ledger = {}
  * Environment detection and library loading.
  */
 
-const isBrowser = new Function('try { return this === window } catch (e) { return false }')
-const isNode = new Function('try { return this === global } catch (e) { return false }')
+const isBrowser = new Function('try { return this === window } catch (e) { return false }')()
+const isNode = new Function('try { return this === global } catch (e) { return false }')()
 
 const StellarApp = require('@ledgerhq/hw-app-str').default
 let Transport, Sdk
-if (isBrowser()) {
+if (isBrowser) {
   if (typeof StellarSdk === 'undefined') {
     throw new Error('stellar-ledger-wallet depends on StellarSdk.')
   }
   Transport = require('@ledgerhq/hw-transport-u2f').default
   Sdk = StellarSdk
-} else if (isNode()) {
+} else if (isNode) {
   /// Prevent node.js libraries to be bundled by any bundler.
   const stealth_require = eval('require')
   Transport = stealth_require('@ledgerhq/hw-transport-node-hid').default
@@ -100,8 +100,12 @@ async function connect (path) {
   /// Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
-      if (!ledger.transport) ledger.transport = await Transport.create()
-      if (!ledger.application) ledger.application = new StellarApp(ledger.transport)
+      if (!ledger.transport || isNode) {
+        ledger.transport = await Transport.create()
+      }
+      if (!ledger.application || isNode) {
+        ledger.application = new StellarApp(ledger.transport)
+      }
       /// Set ledger.publicKey
       Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
       onConnect()

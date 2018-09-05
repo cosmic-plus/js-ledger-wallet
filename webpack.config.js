@@ -6,7 +6,7 @@ module.exports = {
     path: __dirname + '/web/',
     filename: 'ledger-wallet.js',
     library: 'ledgerWallet',
-    libraryTarget: 'var'
+    libraryTarget: 'umd'
   },
   devtool: 'source-map',
   module: {

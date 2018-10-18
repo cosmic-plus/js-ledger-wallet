@@ -38,9 +38,9 @@
     "webpack-cli": "^2.1.4"
   },
   "dependencies": {
-    "@ledgerhq/hw-app-str": "^4.21.0",
-    "@ledgerhq/hw-transport-node-hid": "^4.22.0",
-    "@ledgerhq/hw-transport-u2f": "^4.21.0",
+    "@ledgerhq/hw-app-str": "^4.24.0",
+    "@ledgerhq/hw-transport-node-hid": "^4.24.0",
+    "@ledgerhq/hw-transport-u2f": "^4.24.0",
     "stellar-sdk": "^0.10.3"
   }
 }

@@ -19,31 +19,16 @@
  * // After connection fail
  * ledgerWallet.error
  */
-const ledger = {}
+const ledger = exports
 
-/**
- * Environment detection and library loading.
- */
-
-const isBrowser = new Function('try { return this === window } catch (e) { return false }')()
-const isNode = new Function('try { return this === global } catch (e) { return false }')()
-
+const env = require('@cosmic-plus/jsutils/env')
+const helpers = require('@cosmic-plus/jsutils/misc')
 const StellarApp = require('@ledgerhq/hw-app-str').default
-let Transport, Sdk
-if (isBrowser) {
-  if (typeof StellarSdk === 'undefined') {
-    throw new Error('stellar-ledger-wallet depends on StellarSdk.')
-  }
-  Transport = require('@ledgerhq/hw-transport-u2f').default
-  Sdk = StellarSdk
-} else if (isNode) {
-  /// Prevent node.js libraries to be bundled by any bundler.
-  const stealth_require = eval('require')
-  Transport = stealth_require('@ledgerhq/hw-transport-node-hid').default
-  Sdk = stealth_require('stellar-sdk')
-} else {
-  throw new Error('Your environment is not supported by stellar-ledger-wallet library.')
-}
+const StellarSdk = require('@cosmic-plus/base/stellar-sdk')
+
+const Transport = env.isBrowser
+  ? require('@ledgerhq/hw-transport-u2f').default
+  : env.nodeRequire('@ledgerhq/hw-transport-node-hid').default
 
 /**
  * Methods
@@ -93,17 +78,17 @@ function makePath (account, index, internalFlag) {
   return path
 }
 
-async function connect (path) {
+async function connect () {
   console.log('Attempting ledger connection...')
   ledger.error = undefined
   connection = 'x'
   /// Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
-      if (!ledger.transport || isNode) {
+      if (!ledger.transport || env.isNode) {
         ledger.transport = await Transport.create()
       }
-      if (!ledger.application || isNode) {
+      if (!ledger.application || env.isNode) {
         ledger.application = new StellarApp(ledger.transport)
       }
       /// Set ledger.publicKey
@@ -113,13 +98,9 @@ async function connect (path) {
       ledger.error = error
       if (error.id === 'U2FNotSupported') throw error
       /// Have a timeout to avoid spamming application errors.
-      await timeout(1000)
+      await helpers.timeout(1000)
     }
   }
-}
-
-function timeout (x) {
-  return new Promise(function (resolve) { setTimeout(resolve, x) })
 }
 
 /**
@@ -157,7 +138,7 @@ async function polling () {
   while (thisApplication === ledger.application) {
     ping = false
     refreshAppConfiguration()
-    await timeout(pollingDelay)
+    await helpers.timeout(pollingDelay)
     /// Timeout
     if (ping === false) await ledger.disconnect()
   }
@@ -191,7 +172,7 @@ function reset () {
   connection = null
   const fields = ['transport', 'application', 'path', 'account', 'index',
     'internalFlag', 'version', 'publicKey', 'multiOpsEnabled']
-  fields.forEach(name => ledger[name] = undefined)
+  fields.forEach(name => { ledger[name] = undefined })
 }
 
 /**
@@ -205,17 +186,12 @@ ledger.sign = async function (transaction) {
   const signatureBase = transaction.signatureBase()
   const result = await app.signTransaction(ledger.path, signatureBase)
 
-  const keypair = Sdk.Keypair.fromPublicKey(ledger.publicKey)
+  const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
   const hint = keypair.signatureHint()
-  const decorated = new Sdk.xdr.DecoratedSignature({
+  const decorated = new StellarSdk.xdr.DecoratedSignature({
     hint: hint, signature: result.signature
   })
   transaction.signatures.push(decorated)
 
   return transaction
 }
-
-/**
- * Exports
- */
-module.exports = ledger

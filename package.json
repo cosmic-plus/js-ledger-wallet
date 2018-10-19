@@ -8,7 +8,6 @@
     "get": "git submodule update -i --recursive",
     "format": "standard --fix 'src/**.js'",
     "build-misc": "cp AUTHORS LICENSE README.md package-lock.json web",
-    "build-doc": "jsdoc -c jsdoc.json",
     "build-js": "webpack -p",
     "build": "for i in js misc; do npm run build-$i || return; done",
     "check": "npm run get && cp web/package-lock.json . && npm ci && npm run build && cd web && git status",
@@ -27,21 +26,21 @@
   "repository": "github:MisterTicot/js-stellar-ledgerWallet",
   "browserList": "last 4 versions, > 0.1%",
   "devDependencies": {
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-regenerator": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "jsdoc": "^3.5.5",
-    "minami": "^1.2.3",
-    "standard": "^11.0.1",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/runtime": "^7.1.2",
+    "babel-loader": "^8.0.4",
+    "standard": "^12.0.1",
     "webpack": "^4.17.2",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "@cosmic-plus/base": "^1.1.0",
     "@cosmic-plus/jsutils": "^1.6.0",
     "@ledgerhq/hw-app-str": "^4.24.0",
     "@ledgerhq/hw-transport-node-hid": "^4.24.0",
-    "@ledgerhq/hw-transport-u2f": "^4.24.0"
+    "@ledgerhq/hw-transport-u2f": "^4.24.0",
+    "babel-runtime": "^6.26.0"
   }
 }

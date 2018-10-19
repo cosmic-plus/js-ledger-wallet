@@ -22,6 +22,8 @@
 const ledger = exports
 
 const env = require('@cosmic-plus/jsutils/env')
+if (env.isBrowser) require('regenerator-runtime/runtime')
+
 const helpers = require('@cosmic-plus/jsutils/misc')
 const StellarApp = require('@ledgerhq/hw-app-str').default
 const StellarSdk = require('@cosmic-plus/base/stellar-sdk')

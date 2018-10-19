@@ -29,7 +29,7 @@ In your scripts: `const ledgerWallet = require('@cosmic-plus/ledger-wallet')`
 
 ### Bower
 
-`bower install @cosmic-plus/ledger-wallet`
+`bower install cosmic-plus-ledger-wallet`
 
 In your HTML pages:
 

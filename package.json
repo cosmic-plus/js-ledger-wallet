@@ -1,10 +1,10 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets",
-  "author": "MisterTicot",
-  "license": "MIT",
+  "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:cosmic-plus/node-ledger-wallet",
+  "license": "MIT",
   "browserList": "last 4 versions, > 0.1%",
   "main": "src/ledger.js",
   "keywords": [

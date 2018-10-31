@@ -1,4 +1,9 @@
+"use_strict"
 /**
+ * A convenient wrapper around official Ledger Wallet libraries.
+ *
+ * **Usage:**
+ *
  * async ledgerWallet.connect([accountNumber], [accountIndex], [internalFlag])
  * ledgerWallet.disconnect()
  *
@@ -18,19 +23,21 @@
  *
  * // After connection fail
  * ledgerWallet.error
+ *
+ * @exports ledger
  */
 const ledger = exports
 
-const env = require('@cosmic-plus/jsutils/env')
-if (env.isBrowser) require('regenerator-runtime/runtime')
+const env = require("@cosmic-plus/jsutils/env")
+if (env.isBrowser) require("regenerator-runtime/runtime")
 
-const helpers = require('@cosmic-plus/jsutils/misc')
-const StellarApp = require('@ledgerhq/hw-app-str').default
-const StellarSdk = require('@cosmic-plus/base/stellar-sdk')
+const helpers = require("@cosmic-plus/jsutils/misc")
+const StellarApp = require("@ledgerhq/hw-app-str").default
+const StellarSdk = require("@cosmic-plus/base/stellar-sdk")
 
 const Transport = env.isBrowser
-  ? require('@ledgerhq/hw-transport-u2f').default
-  : env.nodeRequire('@ledgerhq/hw-transport-node-hid').default
+  ? require("@ledgerhq/hw-transport-u2f").default
+  : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
 
 /**
  * Methods
@@ -81,9 +88,10 @@ function makePath (account, index, internalFlag) {
 }
 
 async function connect () {
-  console.log('Attempting ledger connection...')
+  // eslint-disable-next-line no-console
+  console.log("Attempting ledger connection...")
   ledger.error = undefined
-  connection = 'x'
+  connection = "x"
   /// Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
@@ -98,7 +106,7 @@ async function connect () {
       onConnect()
     } catch (error) {
       ledger.error = error
-      if (error.id === 'U2FNotSupported') throw error
+      if (error.id === "U2FNotSupported") throw error
       /// Have a timeout to avoid spamming application errors.
       await helpers.timeout(1000)
     }
@@ -110,9 +118,10 @@ async function connect () {
  */
 ledger.onConnect = null
 async function onConnect () {
-  console.log('Ledger connected')
+  // eslint-disable-next-line no-console
+  console.log("Ledger connected")
   await refreshAppConfiguration()
-  if (typeof ledger.onConnect === 'function') ledger.onConnect()
+  if (typeof ledger.onConnect === "function") ledger.onConnect()
   if (!isPolling) polling()
 }
 
@@ -123,9 +132,10 @@ async function onConnect () {
  */
 ledger.onDisconnect = null
 function onDisconnect () {
-  console.log('Ledger disconnected')
+  // eslint-disable-next-line no-console
+  console.log("Ledger disconnected")
   reset()
-  if (typeof ledger.onDisconnect === 'function') ledger.onDisconnect()
+  if (typeof ledger.onDisconnect === "function") ledger.onDisconnect()
 }
 
 /**
@@ -134,7 +144,8 @@ function onDisconnect () {
 const pollingDelay = 1000
 let ping = false, isPolling = false
 async function polling () {
-  console.log('Start polling')
+  // eslint-disable-next-line no-console
+  console.log("Start polling")
   isPolling = true
   const thisApplication = ledger.application
   while (thisApplication === ledger.application) {
@@ -144,7 +155,8 @@ async function polling () {
     /// Timeout
     if (ping === false) await ledger.disconnect()
   }
-  console.log('Stop polling')
+  // eslint-disable-next-line no-console
+  console.log("Stop polling")
 }
 
 async function refreshAppConfiguration () {
@@ -153,7 +165,7 @@ async function refreshAppConfiguration () {
     Object.assign(ledger, await ledger.application.getAppConfiguration())
     ping = true
   } catch (error) {
-    if (error.currentLock === 'signTransaction') ping = true
+    if (error.currentLock === "signTransaction") ping = true
   }
 }
 
@@ -172,8 +184,8 @@ ledger.disconnect = async function () {
 
 function reset () {
   connection = null
-  const fields = ['transport', 'application', 'path', 'account', 'index',
-    'internalFlag', 'version', 'publicKey', 'multiOpsEnabled']
+  const fields = ["transport", "application", "path", "account", "index",
+    "internalFlag", "version", "publicKey", "multiOpsEnabled"]
   fields.forEach(name => { ledger[name] = undefined })
 }
 
@@ -182,7 +194,7 @@ function reset () {
  */
 
 ledger.sign = async function (transaction) {
-  if (!ledger.publicKey) throw new Error('No ledger wallet connected.')
+  if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
 
   const app = ledger.application
   const signatureBase = transaction.signatureBase()

@@ -140,7 +140,7 @@ function onDisconnect () {
 /**
  * Polling
  */
-const pollingDelay = 1000
+const pollingDelay = 500
 let ping = false, isPolling = false
 async function polling () {
   // eslint-disable-next-line no-console

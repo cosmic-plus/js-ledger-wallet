@@ -134,7 +134,6 @@ ledger.onDisconnect = null
 function onDisconnect () {
   // eslint-disable-next-line no-console
   console.log("Ledger disconnected")
-  reset()
   if (typeof ledger.onDisconnect === "function") ledger.onDisconnect()
 }
 
@@ -175,10 +174,23 @@ async function refreshAppConfiguration () {
 
 ledger.disconnect = async function () {
   isPolling = false
-  if (ledger.transport) {
-    disconnection = ledger.transport.close()
+  const transport = ledger.transport
+  if (transport) {
+    disconnection = closeTransport(transport)
     disconnection.then(onDisconnect)
-    return disconnection
+  } else {
+    disconnection = undefined
+  }
+  reset()
+  return disconnection
+}
+
+async function closeTransport (transport) {
+  // If transport is not valid anymore we consider the transport as closed.
+  try {
+    transport.close()
+  } catch (error) {
+    console.error(error)
   }
 }
 

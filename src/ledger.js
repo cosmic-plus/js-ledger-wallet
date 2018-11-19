@@ -210,6 +210,7 @@ ledger.sign = async function (transaction) {
 
   const app = ledger.application
   const signatureBase = transaction.signatureBase()
+  await waitDevice()
   const result = await app.signTransaction(ledger.path, signatureBase)
 
   const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
@@ -220,4 +221,14 @@ ledger.sign = async function (transaction) {
   transaction.signatures.push(decorated)
 
   return transaction
+}
+
+/**
+ * Device gets locked up while polling. This asynchronous function returns when
+ * it is available.
+ */
+async function waitDevice () {
+  while (ledger.transport._appAPIlock) {
+    await helpers.timeout(100)
+  }
 }

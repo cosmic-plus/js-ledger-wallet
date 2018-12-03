@@ -106,7 +106,16 @@ async function connect () {
       onConnect()
     } catch (error) {
       ledger.error = error
-      if (error.id === "U2FNotSupported") throw error
+      if (error.id === "U2FNotSupported") {
+
+        // This frame may show up when using strict Content-Security-Policy
+        // See: https://github.com/LedgerHQ/ledgerjs/issues/254
+        const iframeSelector = "iframe[src^=chrome-extension/*/u2f-comms.html]"
+        const iframe = document.querySelector(iframeSelector)
+        if (iframe) iframe.parentNode.removeChild(iframe)
+
+        throw error
+      }
       /// Have a timeout to avoid spamming application errors.
       await helpers.timeout(1000)
     }

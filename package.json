@@ -1,6 +1,6 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:cosmic-plus/node-ledger-wallet",

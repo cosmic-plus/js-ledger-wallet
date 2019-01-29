@@ -91,7 +91,8 @@ async function connect () {
   // eslint-disable-next-line no-console
   console.log("Attempting ledger connection...")
   ledger.error = undefined
-  connection = "x"
+  connection = true
+
   /// Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
@@ -136,8 +137,6 @@ async function onConnect () {
 
 /**
  * OnDisconnect
- *
- * This doesn't works as Ledger library never call it
  */
 ledger.onDisconnect = null
 function onDisconnect () {

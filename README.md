@@ -7,16 +7,13 @@ This is a wrapper around the official Ledger libraries for Stellar:
 * [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser only
 
 Ledger wallet support may be a bit tricky to implement because it doesn't
-require the same libraries whether you're on Node.js or in web browser. Also, 
-it requires [quite a few lines of 
-code](https://github.com/cosmic-plus/node-ledger-wallet/blob/master/src/ledger.js) 
-and does't give much clue about how bip path should be handled.
+require the same libraries whether you're on Node.js or in web browser. Also, it
+requires [quite a few lines of
+code](https://github.com/cosmic-plus/node-ledger-wallet/blob/master/src/ledger.js).
 
 This library is solving that by loading the right dependencies automatically and
-providing a few simple on-liners.
+providing a few simple one-liners.
 
-**Disclaimer:** This library is developped independently from the Stellar 
-Foundation and Ledger.
 
 ## Install
 
@@ -43,90 +40,76 @@ In your HTML pages:
 <script src="https://cosmic.plus/web-ledger-wallet/ledger-wallet.js"></script>
 ```
 
-*Note:* For production release it is advised to serve your own copy of the 
+*Note:* For production release it is advised to serve your own copy of the
 libraries.
 
-## Get Started
+## Methods
 
-### Connect to a Ledger wallet
+### await ledgerWallet.connect([$account_number])
 
-This will try to connect until you call the disconnect method or until the
-connection is established.
+This will wait for a connection with the Ledger Wallet application for Stellar.
+If _account_number_ is not provided, account 0 will be used. Note that you'll
+have to `ledgerWallet.disconnect()` if you want the library to stop listening
+for a connection.
 
-```js
-await ledgerWallet.connect([$account_number])
-```
+If at some point you need to make sure that the Ledger Wallet is still
+connected, you can `await ledgerWallet.connect()` again (will re-use previously set _account_number_).
 
-### Ensure the Ledger wallet is still connected
-
-You can use connect() without parameter at any point of your code for this
-purpose.
-
-```js
-await ledgerWallet.connect()
-```
-
-### Disconnect
-
-Close an open connection or stop to wait for connection:
-
-```js
-ledgerWallet.disconnect()
-```
-
-### Get wallet public key
-
-Once connection is established:
-
-```js
-const accountId = ledgerWallet.publicKey
-```
-
-### Sign transaction
-
-Once connection is established:
-
-```js
-await ledgerWallet.sign(transaction)
-```
-
-### onConnect / onDisconnect event handlers
-
-You can set handlers that will be called on device connection and disconnection:
-
-```js
-ledgerWallet.onConnect = myConnectionHandler
-ledgerWallet.onDisconnect = myDisconnectionHandler
-```
-
-### Advanced bip pathes uses
-
-Optionally you can pass the account index and internal flag:
-
-```js
-// ledgerWallet.connect([accountNumber], [accountIndex], [internalFlag])
-// => bip path 44'/148'/accountNumber'/internalFlag'/accountIndex'
-await ledgerWallet.connect(2, 10)
-await ledgerWallet.connect(2, 10, true)
-```
-
-The usage of those fields is explained into the [Bitcoin Bip44 
-Proposal](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). In 
-general, you only need the account number. The account index is another way to 
-derivate different addresses, and an account with the internal flag set to true 
-should not be used publicly and is directly related to the account with the 
-same values but without internal flag.
+If you need to switch to another account, you can directly `await
+ledgerWallet.connect($new_account_number)` without prior deconnection.
 
 
-### Misc
+### await ledgerWallet.sign(transaction)
 
-Other available data (once connection is established):
+Ask the user to confirm _transaction_ on its Ledger Wallet. If confirmed,
+returns the signed transaction. Else, throw an error.
 
-* Stellar app version: `ledgerWallet.version`
-* Hash signing app option: `ledgerWallet.multiOpsEnabled`
-* Bip path: `ledgerWallet.path`
+This method requires that you `ledgerWallet.connect()` first.
 
-Underlying components:
 
-* Ledger Transport instance: `ledgerWallet.transport`
-* Ledger StellarApp instance: `ledgerWallet.application`
+### ledgerWallet.disconnect()
+
+Close the connection with Ledger Wallet Stellar application, or stop listening
+for a connection if none have been established.
+
+
+## Properties
+
+### ledgerWallet.publicKey
+
+Once the device is connected, contains the public key of the selected account.
+
+### ledgerWallet.path
+
+The bip path for the selected account
+
+### ledgerWallet.onConnect = Function
+
+_Function_ to execute on connection.
+
+### ledgerWallet.onDisconnect = Function
+
+_Function_ to execute on disconnection.
+
+### ledgerWallet.version
+
+Ledger Wallet Stellar application version.
+
+### ledgerWallet.multiOpsEnabled
+
+Whether or not user accept to sign transactions without checking them on the
+device first. This allows to sign long transactions that could normally not be
+handled by the device memory, but this is insecure.
+
+### ledgerWallet.transport
+
+The Ledger Transport instance (internal component).
+
+### ledgerWallet.application
+
+The Ledger Stellar application instance (internal component).
+
+
+## Feedback & More
+
+You'll find several ways to contact me on https://cosmic.plus.

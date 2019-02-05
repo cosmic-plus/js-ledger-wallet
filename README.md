@@ -2,9 +2,9 @@
 
 This is a wrapper around the official Ledger libraries for Stellar:
 
-* [Stellar app API](https://www.npmjs.com/package/@ledgerhq/hw-app-str)
-* [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js only
-* [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser only
+- [Stellar app API](https://www.npmjs.com/package/@ledgerhq/hw-app-str)
+- [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js only
+- [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser only
 
 Ledger wallet support may be a bit tricky to implement because it doesn't
 require the same libraries whether you're on Node.js or in web browser. Also, it
@@ -14,13 +14,12 @@ code](https://github.com/cosmic-plus/node-ledger-wallet/blob/master/src/ledger.j
 This library is solving that by loading the right dependencies automatically and
 providing a few simple one-liners.
 
-
 ## Install
 
 ### NPM/Yarn
 
-* NPM: `npm install @cosmic-plus/ledger-wallet`
-* Yarn: `yarn add @cosmic-plus/ledger-wallet`
+- NPM: `npm install @cosmic-plus/ledger-wallet`
+- Yarn: `yarn add @cosmic-plus/ledger-wallet`
 
 In your scripts: `const ledgerWallet = require('@cosmic-plus/ledger-wallet')`
 
@@ -40,7 +39,7 @@ In your HTML pages:
 <script src="https://cosmic.plus/web-ledger-wallet/ledger-wallet.js"></script>
 ```
 
-*Note:* For production release it is advised to serve your own copy of the
+_Note:_ For production release it is advised to serve your own copy of the
 libraries.
 
 ## Methods
@@ -55,9 +54,7 @@ for a connection.
 If at some point you need to make sure that the Ledger Wallet is still
 connected, you can `await ledgerWallet.connect()` again (will re-use previously set _account_number_).
 
-If you need to switch to another account, you can directly `await
-ledgerWallet.connect($new_account_number)` without prior deconnection.
-
+If you need to switch to another account, you can directly `await ledgerWallet.connect($new_account_number)` without prior deconnection.
 
 ### await ledgerWallet.sign(transaction)
 
@@ -66,12 +63,10 @@ returns the signed transaction. Else, throw an error.
 
 This method requires that you `ledgerWallet.connect()` first.
 
-
 ### ledgerWallet.disconnect()
 
 Close the connection with Ledger Wallet Stellar application, or stop listening
 for a connection if none have been established.
-
 
 ## Properties
 
@@ -108,7 +103,6 @@ The Ledger Transport instance (internal component).
 ### ledgerWallet.application
 
 The Ledger Stellar application instance (internal component).
-
 
 ## Feedback & More
 

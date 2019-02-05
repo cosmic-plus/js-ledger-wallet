@@ -29,7 +29,8 @@
 const ledger = exports
 
 const env = require("@cosmic-plus/jsutils/env")
-if (env.isNode) global.regeneratorRuntime = env.nodeRequire("regenerator-runtime")
+if (env.isNode)
+  global.regeneratorRuntime = env.nodeRequire("regenerator-runtime")
 
 const helpers = require("@cosmic-plus/jsutils/misc")
 const StellarApp = require("@ledgerhq/hw-app-str").default
@@ -108,7 +109,6 @@ async function connect () {
     } catch (error) {
       ledger.error = error
       if (error.id === "U2FNotSupported") {
-
         // This frame may show up when using strict Content-Security-Policy
         // See: https://github.com/LedgerHQ/ledgerjs/issues/254
         const iframeSelector = "iframe[src^=chrome-extension/*/u2f-comms.html]"
@@ -149,7 +149,8 @@ function onDisconnect () {
  * Polling
  */
 const pollingDelay = 500
-let ping = false, isPolling = false
+let ping = false,
+  isPolling = false
 async function polling () {
   // eslint-disable-next-line no-console
   console.log("Start polling")
@@ -204,9 +205,20 @@ async function closeTransport (transport) {
 
 function reset () {
   connection = null
-  const fields = ["transport", "application", "path", "account", "index",
-    "internalFlag", "version", "publicKey", "multiOpsEnabled"]
-  fields.forEach(name => { ledger[name] = undefined })
+  const fields = [
+    "transport",
+    "application",
+    "path",
+    "account",
+    "index",
+    "internalFlag",
+    "version",
+    "publicKey",
+    "multiOpsEnabled"
+  ]
+  fields.forEach(name => {
+    ledger[name] = undefined
+  })
 }
 
 /**
@@ -224,7 +236,8 @@ ledger.sign = async function (transaction) {
   const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
   const hint = keypair.signatureHint()
   const decorated = new StellarSdk.xdr.DecoratedSignature({
-    hint: hint, signature: result.signature
+    hint: hint,
+    signature: result.signature
   })
   transaction.signatures.push(decorated)
 

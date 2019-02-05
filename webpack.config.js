@@ -1,18 +1,18 @@
-const webpack = require('webpack')
-
 module.exports = {
-  entry: './src/ledger.js',
+  entry: "./src/ledger.js",
   output: {
-    path: __dirname + '/web/',
-    filename: 'ledger-wallet.js',
-    library: 'ledgerWallet',
-    libraryTarget: 'umd'
+    path: __dirname + "/web/",
+    filename: "ledger-wallet.js",
+    library: "ledgerWallet",
+    libraryTarget: "umd"
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   module: {
-    rules: [{
-      test: /\.(js)$/,
-      loader: 'babel-loader'
-    }]
+    rules: [
+      {
+        test: /\.(js)$/,
+        loader: "babel-loader"
+      }
+    ]
   }
 }

@@ -1,2 +1,2 @@
-* Implement ledger.discovery()
-* Implement ledger.newAccount()
+- Implement ledger.discovery()
+- Implement ledger.newAccount()

@@ -205,21 +205,20 @@ async function closeTransport (transport) {
 
 function reset () {
   connection = null
-  const fields = [
-    "transport",
-    "application",
-    "path",
-    "account",
-    "index",
-    "internalFlag",
-    "version",
-    "publicKey",
-    "multiOpsEnabled"
-  ]
-  fields.forEach(name => {
-    ledger[name] = undefined
-  })
+  libValues.forEach(key => ledger[key] = null)
 }
+
+const libValues = [
+  "transport",
+  "application",
+  "path",
+  "account",
+  "index",
+  "internalFlag",
+  "version",
+  "publicKey",
+  "multiOpsEnabled"
+]
 
 /**
  * Sign

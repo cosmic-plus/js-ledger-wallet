@@ -44,7 +44,7 @@ libraries.
 
 ## Methods
 
-### await ledgerWallet.connect([$account_number])
+### await ledgerWallet.connect([account_number])
 
 This will wait for a connection with the Ledger Wallet application for Stellar.
 If _account_number_ is not provided, account 0 will be used. Note that you'll
@@ -54,7 +54,7 @@ for a connection.
 If at some point you need to make sure that the Ledger Wallet is still
 connected, you can `await ledgerWallet.connect()` again (will re-use previously set _account_number_).
 
-If you need to switch to another account, you can directly `await ledgerWallet.connect($new_account_number)` without prior deconnection.
+If you need to switch to another account, you can directly `await ledgerWallet.connect(new_account_number)` without prior deconnection.
 
 ### await ledgerWallet.sign(transaction)
 

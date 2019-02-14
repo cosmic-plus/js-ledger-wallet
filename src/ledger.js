@@ -158,6 +158,7 @@ async function polling () {
   const thisApplication = ledger.application
   while (thisApplication === ledger.application) {
     ping = false
+    await waitDevice()
     refreshAppConfiguration()
     await helpers.timeout(pollingDelay)
     /// Timeout

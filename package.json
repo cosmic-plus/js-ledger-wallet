@@ -1,5 +1,5 @@
 {
-  "name": "@cosmic-plus/ledger-wallet",
+  "name": "stellar-ledger-wallet",
   "version": "0.2.12",
   "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets in Stellar apps",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
@@ -41,9 +41,9 @@
   "dependencies": {
     "@cosmic-plus/base": "^1.3.4",
     "@cosmic-plus/jsutils": "^1.14.1",
-    "@ledgerhq/hw-app-str": "^4.38.6",
-    "@ledgerhq/hw-transport-node-hid": "^4.38.6",
-    "@ledgerhq/hw-transport-u2f": "^4.38.6",
+    "@ledgerhq/hw-app-str": "^4.39.0",
+    "@ledgerhq/hw-transport-node-hid": "^4.40.0",
+    "@ledgerhq/hw-transport-u2f": "^4.39.0",
     "regenerator-runtime": "^0.13.1"
   }
 }

@@ -156,13 +156,19 @@ async function polling () {
   console.log("Start polling")
   isPolling = true
   const thisApplication = ledger.application
-  while (thisApplication === ledger.application) {
+  while (isPolling && thisApplication === ledger.application) {
     ping = false
     await waitDevice()
     refreshAppConfiguration()
     await helpers.timeout(pollingDelay)
+
     /// Timeout
-    if (ping === false) await ledger.disconnect()
+    if (
+      ping === false
+      && (!ledger.transport || ledger.transport.disconnected !== false)
+    ) {
+      await ledger.disconnect()
+    }
   }
   // eslint-disable-next-line no-console
   console.log("Stop polling")
@@ -249,7 +255,7 @@ ledger.sign = async function (transaction) {
  * it is available.
  */
 async function waitDevice () {
-  while (ledger.transport._appAPIlock) {
+  while (ledger.transport && ledger.transport._appAPIlock) {
     await helpers.timeout(100)
   }
 }

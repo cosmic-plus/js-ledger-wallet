@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "prettier --write --no-semi '**.js' 'src/**.js' '**.json' '**.md'",
-    "eslint": "eslint --fix '**.js' 'src/**.js'",
+    "prettier": "prettier --write --no-semi '**.js' 'src/**.js' 'test/**.js' '**.json' '**.md'",
+    "eslint": "eslint --fix '**.js' 'src/**.js' 'test/**.js'",
     "lint": "npm run prettier && npm run eslint",
     "get": "git submodule update -i --recursive",
     "build-misc": "cp AUTHORS LICENSE README.md package-lock.json web",

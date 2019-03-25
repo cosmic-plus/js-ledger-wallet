@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.19 - 2019-03-26
+
+### Changed
+
+- Update Ledger libraries to 4.48.0.
+
 ## 0.2.18 - 2019-03-18
 
 ## Updated

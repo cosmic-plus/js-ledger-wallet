@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Changed
+
+- Update Ledger libraries to 4.53.0.
+
 ## 0.2.19 - 2019-04-01
 
 ### Changed

@@ -4,6 +4,8 @@
  */
 
 const StellarSdk = require("stellar-sdk")
+const { misc } = require("@cosmic-plus/jsutils")
+
 const ledger = require("../src/ledger.js")
 
 // eslint-disable-next-line no-console
@@ -30,7 +32,7 @@ async function test () {
     console.error(error)
     // eslint-disable-next-line no-console
     console.log("Retry in 5 seconds\n")
-    setTimeout(test, 5000)
+    misc.timeout(5000).then(test)
   }
 }
 

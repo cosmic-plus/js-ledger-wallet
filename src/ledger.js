@@ -28,14 +28,15 @@
  */
 const ledger = exports
 
-const env = require("@cosmic-plus/jsutils/env")
-if (env.isNode)
+const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
+const env = require("@cosmic-plus/jsutils/es5/env")
+const misc = require("@cosmic-plus/jsutils/es5/misc")
+
+if (env.isNode) {
   global.regeneratorRuntime = env.nodeRequire("regenerator-runtime")
+}
 
-const helpers = require("@cosmic-plus/jsutils/misc")
 const StellarApp = require("@ledgerhq/hw-app-str").default
-const StellarSdk = require("@cosmic-plus/base/stellar-sdk")
-
 const Transport = env.isBrowser
   ? require("@ledgerhq/hw-transport-u2f").default
   : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
@@ -118,7 +119,7 @@ async function connect () {
         throw error
       }
       /// Have a timeout to avoid spamming application errors.
-      await helpers.timeout(1000)
+      await misc.timeout(1000)
     }
   }
 }
@@ -160,7 +161,7 @@ async function polling () {
     ping = false
     await waitDevice()
     refreshAppConfiguration()
-    await helpers.timeout(pollingDelay)
+    await misc.timeout(pollingDelay)
 
     /// Timeout
     if (
@@ -256,6 +257,6 @@ ledger.sign = async function (transaction) {
  */
 async function waitDevice () {
   while (ledger.transport && ledger.transport._appAPIlock) {
-    await helpers.timeout(100)
+    await misc.timeout(100)
   }
 }

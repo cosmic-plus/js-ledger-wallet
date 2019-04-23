@@ -3,7 +3,7 @@
  * Connection/disconnection test
  */
 
-const { timeout } = require("@cosmic-plus/jsutils/misc")
+const { misc } = require("@cosmic-plus/jsutils")
 const ledger = require("../src/ledger.js")
 
 // eslint-disable-next-line no-console
@@ -14,9 +14,8 @@ ledger.onConnect = function () {
   console.log(ledger.path + ": " + ledger.publicKey)
 }
 
-ledger.onDisconnect = async function () {
-  await timeout(1000)
-  test()
+ledger.onDisconnect = function () {
+  misc.timeout(1000).then(test)
 }
 
 async function test () {

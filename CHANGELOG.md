@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+
+- Bundle transpiled ES5 code within the package.
+
 ## 0.2.20 - 2019-04-19
 
 ### Changed

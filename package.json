@@ -7,6 +7,7 @@
   "license": "MIT",
   "browserList": "last 4 versions, > 0.1%",
   "main": "src/ledger.js",
+  "index": "es5/ledger.js",
   "keywords": [
     "cryptocurrency",
     "stellar",
@@ -16,29 +17,31 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "prettier --write --no-semi '**.js' 'src/**.js' 'test/**.js' '**.json' '**.md'",
-    "eslint": "eslint --fix '**.js' 'src/**.js' 'test/**.js'",
+    "prettier": "prettier --write --no-semi 'test/*.js' 'src/*.js' '*.js' '*.json' '*.md'",
+    "eslint": "eslint --fix 'test/*.js' 'src/*.js' '*.js'",
     "lint": "npm run prettier && npm run eslint",
     "get": "git submodule update -i --recursive",
     "build-misc": "cp AUTHORS LICENSE README.md CHANGELOG.md package-lock.json web",
-    "build-js": "webpack -p",
+    "build-es5": "babel --delete-dir-on-start --out-dir es5 src",
+    "build-js": "npm run build-es5 && webpack -p",
     "build": "for i in js misc; do npm run build-$i || return; done",
     "rebuild": "npm run get && cp -f web/package-lock.json . && npm ci && npm run build",
     "check": "npm run rebuild && cd web && git status",
-    "watch": "webpack -d --watch"
+    "watch-es5": "babel --watch --delete-dir-on-start --out-dir es5 src",
+    "watch": "npm run watch-es5 & webpack -d --watch"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
     "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
-    "@babel/runtime": "^7.4.3",
-    "babel-loader": "^8.0.5",
     "eslint": "^5.16.0",
     "prettier": "^1.17.0",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.3",
     "@cosmic-plus/base": "^2.0.0",
     "@cosmic-plus/jsutils": "^2.0.0",
     "@ledgerhq/hw-app-str": "^4.53.0",

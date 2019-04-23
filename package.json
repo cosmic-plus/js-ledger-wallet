@@ -5,9 +5,8 @@
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:cosmic-plus/node-ledger-wallet",
   "license": "MIT",
-  "browserList": "last 4 versions, > 0.1%",
-  "main": "src/ledger.js",
-  "index": "es5/ledger.js",
+  "main": "src/index.js",
+  "index": "es5/index.js",
   "keywords": [
     "cryptocurrency",
     "stellar",

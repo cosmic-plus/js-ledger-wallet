@@ -6,7 +6,7 @@
 const StellarSdk = require("stellar-sdk")
 const { misc } = require("@cosmic-plus/jsutils")
 
-const ledger = require("../src/ledger.js")
+const ledger = require("../src")
 
 // eslint-disable-next-line no-console
 console.log(ledger)

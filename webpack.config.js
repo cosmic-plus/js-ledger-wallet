@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./es5/ledger.js",
+  entry: "./es5/index.js",
   output: {
     path: __dirname + "/web/",
     filename: "ledger-wallet.js",

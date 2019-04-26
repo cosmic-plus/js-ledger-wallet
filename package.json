@@ -26,8 +26,8 @@
     "build": "for i in js misc; do npm run build-$i || return; done",
     "rebuild": "npm run get && cp -f web/package-lock.json . && npm ci && npm run build",
     "check": "npm run rebuild && cd web && git status",
-    "watch-es5": "babel --watch --delete-dir-on-start --out-dir es5 src",
-    "watch": "npm run watch-es5 & webpack -d --watch"
+    "watch-es5": "babel --watch --out-dir es5 src",
+    "watch": "npm run build-es5; webpack -d --watch & npm run watch-es5"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",

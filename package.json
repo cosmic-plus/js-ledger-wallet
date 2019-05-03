@@ -1,6 +1,6 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets in Stellar apps",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:cosmic-plus/node-ledger-wallet",
@@ -30,17 +30,17 @@
     "watch": "npm run build-es5; webpack -d --watch & npm run watch-es5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-transform-runtime": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "eslint": "^5.16.0",
     "prettier": "^1.17.0",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.4.4",
     "@cosmic-plus/base": "^2.0.0",
     "@cosmic-plus/jsutils": "^2.0.0",
     "@ledgerhq/hw-app-str": "^4.55.0",

@@ -38,7 +38,7 @@ async function test () {
 
 function makeTransaction (pubkey) {
   const account = new StellarSdk.Account(pubkey, "0")
-  const txBuilder = new StellarSdk.TransactionBuilder(account)
+  const txBuilder = new StellarSdk.TransactionBuilder(account, { fee: 100 })
   return txBuilder.setTimeout(0).build()
 }
 

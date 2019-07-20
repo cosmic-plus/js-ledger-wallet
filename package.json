@@ -1,7 +1,7 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
   "version": "0.3.3",
-  "description": "A wrapper around official Ledger libraries that makes it easier to deal with Ledger wallets in Stellar apps",
+  "description": "A wrapper around official Ledger libraries that makes it easy to deal with Ledger wallets in Stellar apps",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "homepage": "https://cosmic.plus/#view:js-ledger-wallet",
   "repository": "github:cosmic-plus/js-ledger-wallet",
@@ -9,11 +9,12 @@
   "main": "src/index.js",
   "index": "es5/index.js",
   "keywords": [
-    "cryptocurrency",
     "stellar",
     "hardware",
-    "ledger",
-    "wallet"
+    "Ledger",
+    "wallet",
+    "browser",
+    "node"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

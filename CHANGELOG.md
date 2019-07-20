@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Switch to new cosmic.plus paths (cdn.cosmic.plus, new repository name).
+- Improve discoverability (add badges, keywords, set homepage...).
 
 ## 0.3.3 - 2019-06-22
 

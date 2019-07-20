@@ -1,5 +1,11 @@
 # @cosmic-plus/ledger-wallet
 
+![Licence](https://img.shields.io/github/license/cosmic-plus/js-ledger-wallet.svg)
+[![Dependencies](https://david-dm.org/cosmic-plus/js-ledger-wallet/status.svg)](https://david-dm.org/cosmic-plus/js-ledger-wallet)
+![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@cosmic-plus/ledger-wallet.svg)
+![Size](https://img.shields.io/bundlephobia/minzip/@cosmic-plus/ledger-wallet.svg)
+![Downloads](https://img.shields.io/npm/dt/@cosmic-plus/ledger-wallet.svg)
+
 This is a wrapper around the official Ledger libraries for Stellar:
 
 - [Stellar app API](https://www.npmjs.com/package/@ledgerhq/hw-app-str)

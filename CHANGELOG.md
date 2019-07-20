@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.4 - 2019-07-20
+
+### Changed
+
+- Switch to new cosmic.plus paths (cdn.cosmic.plus, new repository name).
+
 ## 0.3.3 - 2019-06-22
 
 ### Changed
@@ -111,4 +117,4 @@ All notable changes to this project will be documented in this file.
 ## Older Releases
 
 There is no changelog for older releases. Please look take a look at [commit
-history](https://github.com/cosmic-plus/node-ledger-wallet/commits/master).
+history](https://github.com/cosmic-plus/js-ledger-wallet/commits/master).

@@ -56,9 +56,9 @@
     "@babel/runtime": "^7.5.5",
     "@cosmic-plus/base": "^2.0.4",
     "@cosmic-plus/jsutils": "^2.0.2",
-    "@ledgerhq/hw-app-str": "^4.63.2",
-    "@ledgerhq/hw-transport-node-hid": "^4.63.2",
-    "@ledgerhq/hw-transport-u2f": "^4.63.2",
+    "@ledgerhq/hw-app-str": "^4.68.2",
+    "@ledgerhq/hw-transport-node-hid": "^4.68.2",
+    "@ledgerhq/hw-transport-u2f": "^4.68.2",
     "regenerator-runtime": "^0.13.3"
   }
 }

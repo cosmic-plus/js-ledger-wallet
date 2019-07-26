@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Automate release procedure.
 - Add contributing guidelines.
+- Update Ledger libraries to 4.68.x
 
 ## 0.3.4 - 2019-07-20
 

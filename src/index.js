@@ -28,7 +28,6 @@
  */
 const ledger = exports
 
-const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
 const env = require("@cosmic-plus/jsutils/es5/env")
 const misc = require("@cosmic-plus/jsutils/es5/misc")
 
@@ -234,6 +233,7 @@ const libValues = [
 
 ledger.sign = async function (transaction) {
   if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
+  const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
 
   const app = ledger.application
   const signatureBase = transaction.signatureBase()

@@ -1,3 +1,8 @@
+**ledger-wallet /**
+[Readme](README.md)
+• [Contributing](CONTRIBUTING.md)
+• [Changelog](CHANGELOG.md)
+
 # Contributing Guidelines
 
 Welcome to new contributors! This project is open to input & edits.

@@ -1,4 +1,9 @@
-# @cosmic-plus/ledger-wallet
+**ledger-wallet /**
+[Readme](README.md)
+• [Contributing](CONTRIBUTING.md)
+• [Changelog](CHANGELOG.md)
+
+# Readme
 
 ![Licence](https://img.shields.io/github/license/cosmic-plus/js-ledger-wallet.svg)
 [![Dependencies](https://david-dm.org/cosmic-plus/js-ledger-wallet/status.svg)](https://david-dm.org/cosmic-plus/js-ledger-wallet)

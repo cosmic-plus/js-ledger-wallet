@@ -22,7 +22,7 @@
     "eslint": "eslint --fix 'test/*.js' 'src/*.js' '*.js'",
     "lint": "npm run prettier && npm run eslint",
     "get": "git submodule update -i --recursive",
-    "build-misc": "cp AUTHORS LICENSE README.md CHANGELOG.md package-lock.json web",
+    "build-misc": "cp *.md package-lock.json web",
     "build-es5": "babel --delete-dir-on-start --out-dir es5 src",
     "build-js": "npm run build-es5 && webpack -p",
     "build": "for i in js misc; do npm run build-$i || return; done",

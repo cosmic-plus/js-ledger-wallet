@@ -15,7 +15,7 @@ This is a wrapper around the official Ledger libraries for Stellar:
 Ledger wallet support may be a bit tricky to implement because it doesn't
 require the same libraries whether you're on Node.js or in web browser. Also, it
 requires [quite a few lines of
-code](https://github.com/cosmic-plus/js-ledger-wallet/blob/master/src/ledger.js).
+code](https://github.com/cosmic-plus/js-ledger-wallet/blob/master/src/index.js).
 
 This library is solving that by loading the right dependencies automatically and
 providing a few simple one-liners.
@@ -74,15 +74,7 @@ This method requires that you `ledgerWallet.connect()` first.
 Close the connection with Ledger Wallet Stellar application, or stop listening
 for a connection if none have been established.
 
-## Properties
-
-### ledgerWallet.publicKey
-
-Once the device is connected, contains the public key of the selected account.
-
-### ledgerWallet.path
-
-The bip path for the selected account
+## Events
 
 ### ledgerWallet.onConnect = Function
 
@@ -91,6 +83,18 @@ _Function_ to execute on connection.
 ### ledgerWallet.onDisconnect = Function
 
 _Function_ to execute on disconnection.
+
+## Properties
+
+Those properties become available once the Ledger device is connected.
+
+### ledgerWallet.publicKey
+
+Contains the public key of the selected account.
+
+### ledgerWallet.path
+
+Contains the bip path for the selected account
 
 ### ledgerWallet.version
 
@@ -112,4 +116,4 @@ The Ledger Stellar application instance (internal component).
 
 ## Feedback & More
 
-You'll find several ways to contact me on https://cosmic.plus.
+You'll find several ways to contact me at <https://cosmic.plus>.

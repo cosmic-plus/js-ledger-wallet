@@ -3,11 +3,11 @@
 • [Contributing](CONTRIBUTING.md)
 • [Changelog](CHANGELOG.md)
 
-# 0.3.6 - 2019-07-31
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.3.6 - 2019-07-31
 
 ### Changed
 

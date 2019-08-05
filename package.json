@@ -7,7 +7,7 @@
   "repository": "github:cosmic-plus/js-ledger-wallet",
   "license": "MIT",
   "main": "src/index.js",
-  "index": "es5/index.js",
+  "module": "es5/index.js",
   "keywords": [
     "stellar",
     "hardware",

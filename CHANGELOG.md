@@ -7,6 +7,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- Make bundlers pick the transpiled code.
+
 ## 0.3.6 - 2019-07-31
 
 ### Changed

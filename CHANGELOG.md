@@ -5,9 +5,14 @@
 
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. This
+software adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+In other words, breaking changes are introduced in major releases only (X.0.0).
 
-## Unreleased
+## 1.0.0 - 2019-08-10
+
+**Note:** This major release doesn't contain any breaking change. The version
+bump only means that this library is public and stable.
 
 ### Fixed
 

@@ -47,7 +47,7 @@ In your HTML pages:
 ### HTML
 
 ```HTML
-<script src="https://cdn.cosmic.plus/ledger-wallet@0.x"></script>
+<script src="https://cdn.cosmic.plus/ledger-wallet@1.x"></script>
 ```
 
 _Note:_ For production release it is advised to serve your own copy of the

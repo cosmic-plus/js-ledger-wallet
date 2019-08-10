@@ -139,7 +139,7 @@ bump only means that this library is public and stable.
 
 - Update Ledger libraries.
 
-## 0.2.09 - 2019-12-18
+## 0.2.09 - 2018-12-18
 
 ### Changed
 

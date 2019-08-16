@@ -1,7 +1,8 @@
 **ledger-wallet /**
-[Readme](README.md)
-• [Contributing](CONTRIBUTING.md)
-• [Changelog](CHANGELOG.md)
+[Readme](https://cosmic.plus/#view:js-ledger-wallet)
+• [Examples](https://cosmic.plus/#view:js-ledger-wallet/EXAMPLES)
+• [Contributing](https://cosmic.plus/#view:js-ledger-wallet/CONTRIBUTING)
+• [Changelog](https://cosmic.plus/#view:js-ledger-wallet/CHANGELOG)
 
 # Contributing Guidelines
 

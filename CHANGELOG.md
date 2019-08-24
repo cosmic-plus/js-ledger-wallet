@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file. This
 software adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 In other words, breaking changes are introduced in major releases only (X.0.0).
 
+## 1.1.1 - 2019-08-31
+
+### Fixed
+
+- Documentation: Fix contributing guidelines.
+
 ## 1.1.0 - 2019-08-17
 
 ### Added

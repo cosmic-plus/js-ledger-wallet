@@ -17,7 +17,7 @@
     "node"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine 'test/**/*.spec.js'",
     "prettier": "prettier --write --no-semi 'test/*.js' 'src/*.js' '*.js' '*.json' '*.md'",
     "eslint": "eslint --fix 'test/*.js' 'src/*.js' '*.js'",
     "lint": "npm run prettier && npm run eslint",
@@ -27,7 +27,8 @@
     "build-js": "npm run build-es5 && webpack -p",
     "build": "for i in js misc; do npm run build-$i || return; done",
     "rebuild": "npm run get && cp -f web/package-lock.json . && npm ci && npm run build",
-    "check": "npm run rebuild && cd web && git status && [ ! \"$(git status -z)\" ]",
+    "check-build": "npm run rebuild && cd web && git status && [ ! \"$(git status -z)\" ]",
+    "check": "npm run test && npm run check-build",
     "watch-es5": "babel --watch --out-dir es5 src",
     "watch": "npm run build-es5; webpack -d --watch & npm run watch-es5",
     "commit-web": "cd web && git ci -am \"$message\"",
@@ -48,6 +49,7 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "eslint": "^5.16.0",
+    "jasmine": "^3.4.0",
     "prettier": "^1.18.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"

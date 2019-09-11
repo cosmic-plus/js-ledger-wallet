@@ -42,6 +42,7 @@ npm run get
 **Commit:**
 
 ```
+npm run test
 npm run lint
 git ci ...
 ```
@@ -65,6 +66,7 @@ Please sign your commits and tags with your PGP key.
 Those helpers require a POSIX shell.
 
 - `npm run get`: Fetch the `web` sub-repository.
+- `npm run test`: Run the test suite.
 - `npm run lint`: Lint code.
 - `npm run watch`: Automatically transpile & bundle code after each change.
 - `npm run build`: Build the production transpiled code & browser bundle.

@@ -11,7 +11,7 @@ Here are some live examples for you to play with.
 
 ## Get Public Key
 
-<!--MNbRBX--><p class="codepen" data-height="400" data-theme-id="37456" data-default-tab="js,result" data-user="cosmic-plus" data-slug-hash="MNbRBX" data-preview="true" data-editable="true" style="height: 400px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ledger-wallet, Sign transaction">
+<!--MNbRBX--><p class="codepen" data-height="400" data-theme-id="37456" data-default-tab="js,result" data-user="cosmic-plus" data-slug-hash="MNbRBX" data-preview="true" data-editable="true" style="height: 400px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ledger-wallet, Get Public Key">
   <span>
     Open the live editor on
     <a href="https://codepen.io/cosmic-plus/pen/MNbRBX?editors=1010">
@@ -25,7 +25,7 @@ Here are some live examples for you to play with.
 
 ## Sign Transaction
 
-<!--QeZNRd--><p class="codepen" data-height="400" data-theme-id="37456" data-default-tab="js,result" data-user="cosmic-plus" data-slug-hash="QeZNRd" data-preview="true" data-editable="true" style="height: 400px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ledger-wallet, Sign transaction">
+<!--QeZNRd--><p class="codepen" data-height="400" data-theme-id="37456" data-default-tab="js,result" data-user="cosmic-plus" data-slug-hash="QeZNRd" data-preview="true" data-editable="true" style="height: 400px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="ledger-wallet, Sign Transaction">
   <span>
     Open the live editor on
     <a href="https://codepen.io/cosmic-plus/pen/QeZNRd?editors=1010">

@@ -1,6 +1,6 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A wrapper around official Ledger libraries that makes it easy to deal with Ledger wallets in Stellar apps",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "homepage": "https://cosmic.plus/#view:js-ledger-wallet",
@@ -47,23 +47,23 @@
     "publish-release": "npm run check && npm run tag-release && npm run push-release && npm publish"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
     "eslint": "^5.16.0",
     "jasmine": "^3.4.0",
     "prettier": "^1.18.2",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.7"
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "@cosmic-plus/base": "^2.0.5",
+    "@babel/runtime": "^7.6.0",
+    "@cosmic-plus/base": "^2.2.0",
     "@cosmic-plus/jsutils": "^2.0.2",
-    "@ledgerhq/hw-app-str": "^4.68.4",
-    "@ledgerhq/hw-transport-node-hid": "^4.68.4",
-    "@ledgerhq/hw-transport-u2f": "^4.68.4",
+    "@ledgerhq/hw-app-str": "^4.70.0",
+    "@ledgerhq/hw-transport-node-hid": "^4.70.0",
+    "@ledgerhq/hw-transport-u2f": "^4.70.0",
     "regenerator-runtime": "^0.13.3"
   }
 }

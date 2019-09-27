@@ -21,7 +21,7 @@ This is a wrapper around the official Ledger libraries for Stellar:
 Ledger wallet support may be a bit tricky to implement because it doesn't
 require the same libraries whether you're on Node.js or in web browser. Also, it
 requires [quite a few lines of
-code](https://github.com/cosmic-plus/js-ledger-wallet/blob/master/src/index.js).
+code](https://github.com/cosmic-plus/js-ledger-wallet/blob/master/src/index.js).https://github.com/cosmic-plus
 
 This library is solving that by loading the right dependencies automatically and
 providing a few simple one-liners.

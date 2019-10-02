@@ -1,5 +1,5 @@
-/* global describe it expect jasmine */
-"use_strict"
+/* eslint-env jasmine */
+"use strict"
 
 const StellarSdk = require("stellar-sdk")
 const ledgerWallet = require("../src")

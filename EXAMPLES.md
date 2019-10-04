@@ -17,7 +17,7 @@ Here are some live examples for you to play with.
     <a href="https://codepen.io/cosmic-plus/pen/MNbRBX?editors=1010">
       Codepen
     </a> or
-    <a href="https://cosmic-plus/#view:js-ledger-wallet/EXAMPLES.html">
+    <a href="https://cosmic.plus/#view:js-ledger-wallet/EXAMPLES">
       Cosmic.plus
     </a>
   </span>
@@ -31,7 +31,7 @@ Here are some live examples for you to play with.
     <a href="https://codepen.io/cosmic-plus/pen/QeZNRd?editors=1010">
       Codepen
     </a> or
-    <a href="https://cosmic-plus/#view:js-ledger-wallet/EXAMPLES.html">
+    <a href="https://cosmic.plus/#view:js-ledger-wallet/EXAMPLES">
       Cosmic.plus
     </a>
   </span>

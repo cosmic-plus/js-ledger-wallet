@@ -7,6 +7,7 @@
 # Examples
 
 Here are some live examples for you to play with.
+
 <script async src="https://static.codepen.io/assets/embed/ei.js" hidden></script>
 
 ## Get Public Key

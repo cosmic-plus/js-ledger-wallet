@@ -1,6 +1,6 @@
 {
   "name": "cosmic-plus-ledger-wallet",
-  "description": "A wrapper around official Ledger libraries that makes it easy to deal with Ledger wallets in Stellar apps",
+  "description": "Easy Ledger Wallet support for Stellar applications and command line",
   "authors": [
     "MisterTicot"
   ],

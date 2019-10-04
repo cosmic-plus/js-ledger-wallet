@@ -9,8 +9,8 @@
 ![Licence](https://img.shields.io/github/license/cosmic-plus/js-ledger-wallet.svg)
 [![Dependencies](https://badgen.net/david/dep/cosmic-plus/js-ledger-wallet)](https://david-dm.org/cosmic-plus/js-ledger-wallet)
 ![Vulnerabilities](https://snyk.io/test/npm/@cosmic-plus/ledger-wallet/badge.svg)
-![Size](https://badgen.net/bundlephobia/minzip/@cosmic-plus/ledger-wallet)
 ![Downloads](https://badgen.net/npm/dt/@cosmic-plus/ledger-wallet)
+![Bundle](https://badgen.net/badgesize/gzip/cosmic-plus/js-ledger-wallet-web/master/ledger-wallet.js?label=bundle)
 
 This is a wrapper around the official Ledger libraries for Stellar:
 
@@ -33,13 +33,13 @@ providing a few simple one-liners.
 - NPM: `npm install @cosmic-plus/ledger-wallet`
 - Yarn: `yarn add @cosmic-plus/ledger-wallet`
 
-In your scripts: `const ledgerWallet = require('@cosmic-plus/ledger-wallet')`
+In your script: `const ledgerWallet = require("@cosmic-plus/ledger-wallet")`
 
 ### Bower
 
 `bower install cosmic-plus-ledger-wallet`
 
-In your HTML pages:
+In your HTML page:
 
 ```HTML
 <script src="./bower_components/cosmic-plus-ledger-wallet/ledger-wallet.js"></script>
@@ -47,12 +47,13 @@ In your HTML pages:
 
 ### HTML
 
+In your HTML page:
+
 ```HTML
 <script src="https://cdn.cosmic.plus/ledger-wallet@1.x"></script>
 ```
 
-_Note:_ For production release it is advised to serve your own copy of the
-libraries.
+_Note:_ For production release it is advised to serve your copy of the library.
 
 ## Methods
 
@@ -120,6 +121,10 @@ The Ledger Transport instance (internal component).
 
 The Ledger Stellar application instance (internal component).
 
-## Feedback & More
+## Links
 
-You'll find several ways to contact me at <https://cosmic.plus>.
+**Organization:** [Cosmic.plus](https://cosmic.plus/) | [@GitHub](https://git.cosmic.plus) | [@NPM](https://www.npmjs.com/search?q=cosmic-plus)
+
+**Follow:** [Reddit](https://reddit.com/r/cosmic_plus) | [Twitter](https://twitter.com/cosmic_plus) | [Medium](https://medium.com/cosmic-plus) | [Codepen](https://codepen.io/cosmic-plus)
+
+**Talk:** [Telegram](https://t.me/cosmic_plus) | [Keybase](https://keybase.io/team/cosmic_plus)

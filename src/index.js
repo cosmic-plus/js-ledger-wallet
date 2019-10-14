@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 /**
  * A convenient wrapper around official Ledger Wallet libraries.
  *

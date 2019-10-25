@@ -9,29 +9,60 @@ const { any } = jasmine
 
 const xdr =
   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+// const xdr =
+//   "AAAAAAjqnN33f2Zp1adBm3NTILuNMf2RAh9XgUuUB/92Xa5uAAAAZAAUgfMAAAABAAAAAAAAAAAAAAABAAAAAAAAAAwAAAABR0lMUwAAAABXyOboiZ1RA22CGNm8PJJ5WjPPpZtSor+ntmQubgGA8QAAAAAAAAAABfXhAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAA=="
+// const xdr =
+//   "AAAAAAjqnN33f2Zp1adBm3NTILuNMf2RAh9XgUuUB/92Xa5uAAAAZAAUgfMAAAABAAAAAAAAAAAAAAABAAAAAAAAAAMAAAABR0lMUwAAAABXyOboiZ1RA22CGNm8PJJ5WjPPpZtSor+ntmQubgGA8QAAAAAAAAAABfXhAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAA=="
+
 const tx1 = new StellarSdk.Transaction(xdr, StellarSdk.Networks.TESTNET)
 const tx2 = new StellarSdk.Transaction(xdr, StellarSdk.Networks.TESTNET)
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
-jasmine.currentEnv_.configure({ random: false })
 
 /* Specifications */
 
 describe("ledgerWallet", () => {
-  let connect = 0,
-    disconnect = 0
-  ledgerWallet.onConnect = () => connect = true
-  ledgerWallet.onDisconnect = () => disconnect = true
-
-  it("connects with Ledger Wallet", async () => {
-    await ledgerWallet.connect()
+  afterEach(async () => {
+    ledgerWallet.onConnect = undefined
+    ledgerWallet.onDisconnect = undefined
+    await ledgerWallet.disconnect()
   })
 
-  describe("connection", () => {
-    it("sets .path", async () => {
+  describe("connect()", () => {
+    it("connects with Ledger Wallet", async () => {
       await ledgerWallet.connect()
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/\d+'?$/)
-      expect(ledgerWallet.path).toMatch(/^44'\/148'(\/\d+'?){1,3}$/)
+    })
+
+    it("sets .path using default", async () => {
+      await ledgerWallet.connect()
+      expect(ledgerWallet.path).toMatch(/^44'\/148'\/0'$/)
+      expect(ledgerWallet.account).toBe(0)
+      expect(ledgerWallet.index).toBe(0)
+      expect(ledgerWallet.internalFlag).toBe(false)
+    })
+
+    it("sets .path using number", async () => {
+      await ledgerWallet.connect(3)
+      expect(ledgerWallet.path).toMatch(/^44'\/148'\/3'$/)
+      expect(ledgerWallet.account).toBe(3)
+      expect(ledgerWallet.index).toBe(0)
+      expect(ledgerWallet.internalFlag).toBe(false)
+    })
+
+    it("sets .path using custom parameters (1)", async () => {
+      await ledgerWallet.connect(2, 1)
+      expect(ledgerWallet.path).toMatch(/^44'\/148'\/2'\/0'\/1'$/)
+      expect(ledgerWallet.account).toBe(2)
+      expect(ledgerWallet.index).toBe(1)
+      expect(ledgerWallet.internalFlag).toBe(false)
+    })
+
+    it("sets .path using custom parameters (2)", async () => {
+      await ledgerWallet.connect(4, 6, true)
+      expect(ledgerWallet.path).toMatch(/^44'\/148'\/4'\/1'\/6'$/)
+      expect(ledgerWallet.account).toBe(4)
+      expect(ledgerWallet.index).toBe(6)
+      expect(ledgerWallet.internalFlag).toBe(true)
     })
 
     it("sets .publicKey", async () => {
@@ -40,40 +71,76 @@ describe("ledgerWallet", () => {
       expect(ledgerWallet.publicKey.length).toEqual(56)
       StellarSdk.Keypair.fromPublicKey(ledgerWallet.publicKey)
     })
+
+    it("sets properties related to stellar-app-ledger", async () => {
+      await ledgerWallet.connect()
+      expect(ledgerWallet.version).toEqual(any(String))
+      expect(ledgerWallet.multiOpsEnabled).toEqual(any(Boolean))
+    })
+
+    it("sets misc properties", async () => {
+      await ledgerWallet.connect()
+      expect(ledgerWallet.transport).toEqual(any(Object))
+      expect(ledgerWallet.application).toEqual(any(Object))
+    })
   })
 
-  it("signs transactions", async () => {
-    await ledgerWallet.connect()
-    // eslint-disable-next-line no-console
-    console.log("Please accept the dummy transaction")
-    await ledgerWallet.sign(tx1)
-    const hasSigned = StellarSdk.Utils.verifyTxSignedBy
-    const pubkey = ledgerWallet.publicKey
-    expect(hasSigned(tx1, pubkey)).toBe(true)
+  describe("sign()", () => {
+    it("signs transactions", async () => {
+      await ledgerWallet.connect()
+      // eslint-disable-next-line no-console
+      console.log("Please accept the dummy transaction")
+      await ledgerWallet.sign(tx1)
+      const hasSigned = StellarSdk.Utils.verifyTxSignedBy
+      const pubkey = ledgerWallet.publicKey
+      expect(hasSigned(tx1, pubkey)).toBe(true)
+    })
+
+    it("throws when user refuses to sign", async () => {
+      await ledgerWallet.connect()
+      // eslint-disable-next-line no-console
+      console.log("Please reject the dummy transaction")
+      return ledgerWallet
+        .sign(tx2)
+        .then(() => {
+          return new Error("Did not throw an error")
+        })
+        .catch(error => expect(error).toEqual(any(Error)))
+    })
   })
 
-  it("throws when user refuses to sign", async () => {
-    // eslint-disable-next-line no-console
-    console.log("Please reject the dummy transaction")
-    return ledgerWallet
-      .sign(tx2)
-      .then(() => {
-        return new Error("Did not throw an error")
-      })
-      .catch(error => expect(error).toEqual(any(Error)))
-  })
+  describe(".disconnect()", () => {
+    it("disconnects from Ledger Wallet", async () => {
+      await ledgerWallet.connect()
+      await ledgerWallet.disconnect()
+    })
 
-  it("disconnects", async () => {
-    await ledgerWallet.disconnect()
+    it("unsets session properties", async () => {
+      await ledgerWallet.connect()
+      await ledgerWallet.disconnect()
+      expect(ledgerWallet.path).toBe(null)
+      expect(ledgerWallet.publicKey).toBe(null)
+      expect(ledgerWallet.version).toEqual(null)
+      expect(ledgerWallet.multiOpsEnabled).toEqual(null)
+      expect(ledgerWallet.transport).toEqual(null)
+      expect(ledgerWallet.application).toEqual(null)
+    })
   })
 
   describe("events", () => {
-    it("calls .onDisconnect on disconnection", async () => {
-      expect(disconnect).toBe(true)
+    it("calls .onConnect on connection", async () => {
+      let connect = false
+      ledgerWallet.onConnect = () => connect = true
+      await ledgerWallet.connect()
+      expect(connect).toBe(true)
     })
 
-    it("calls .onConnect on connection", async () => {
-      expect(connect).toBe(true)
+    it("calls .onDisconnect on disconnection", async () => {
+      let disconnect = false
+      ledgerWallet.onDisconnect = () => disconnect = true
+      await ledgerWallet.connect()
+      await ledgerWallet.disconnect()
+      expect(disconnect).toBe(true)
     })
   })
 })

@@ -105,7 +105,7 @@ async function connect () {
       }
       /// Set ledger.publicKey
       Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
-      onConnect()
+      await onConnect()
     } catch (error) {
       ledger.error = error
       if (error.id === "U2FNotSupported") {
@@ -166,6 +166,7 @@ async function polling () {
     if (
       ping === false
       && (!ledger.transport || ledger.transport.disconnected !== false)
+      && thisApplication === ledger.application
     ) {
       await ledger.disconnect()
     }

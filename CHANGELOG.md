@@ -20,6 +20,18 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.2.0 - 2019-10-26
+
+### Changed
+
+- Logic: Update Ledger libraries to 4.73.x. (bugfixes)
+
+### Fixed
+
+- Logic: Fix two timing bugs. - `onConnect` callback was fired before the end
+  of initialization. - In some cases, polling could cause an alive session to
+  disconnect.
+
 ## 1.1.2 - 2019-09-14
 
 ### Fixed

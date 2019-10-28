@@ -40,6 +40,11 @@ const Transport = env.isBrowser
   ? require("@ledgerhq/hw-transport-u2f").default
   : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
 
+/*
+ * Configuration
+ */
+const BIP_PATH = "44'/148'"
+
 /**
  * Methods
  */
@@ -50,14 +55,8 @@ let connection, disconnection
  * Connect
  */
 
-ledger.connect = async function (account, index, internalFlag) {
-  if (account === undefined) {
-    account = ledger.account || 0
-    index = ledger.index || 0
-    internalFlag = ledger.internalFlag || false
-  }
-
-  const path = makePath(account, index, internalFlag)
+ledger.connect = async function (account = ledger.path, index, internalFlag) {
+  const path = ledger.connect.path(account, index, internalFlag)
 
   /// Be sure disconnection process is finished.
   if (disconnection) {
@@ -80,10 +79,21 @@ ledger.connect = async function (account, index, internalFlag) {
   return connection
 }
 
-function makePath (account, index, internalFlag) {
-  let path = `44'/148'/${account}'`
-  if (index || internalFlag) path += internalFlag ? "/1'" : "/0'"
-  if (index) path += `/${index}'`
+ledger.connect.path = function (account, index, internalFlag) {
+  let path
+
+  // Deprecated.
+  if (index || internalFlag) {
+    path = `${BIP_PATH}/${account || 0}'`
+    path += internalFlag ? "/1'" : "/0'"
+    if (index) path += `/${index}'`
+  } else {
+    if (typeof account === "number") {
+      path = `${BIP_PATH}/${account}'`
+    } else {
+      path = account ? account.replace(/^m\//, "") : `${BIP_PATH}/0'`
+    }
+  }
 
   return path
 }

@@ -67,8 +67,8 @@ ledger.connect = async function (account, index, internalFlag) {
 
   /// If the bip path is different we need to go through connect() again.
   if (ledger.path !== path) {
-    connection = undefined
-    ledger.publicKey = undefined
+    connection = null
+    ledger.publicKey = null
     ledger.path = path
     ledger.account = account || 0
     ledger.index = index || 0
@@ -91,7 +91,7 @@ function makePath (account, index, internalFlag) {
 async function connect () {
   // eslint-disable-next-line no-console
   console.log("Attempting ledger connection...")
-  ledger.error = undefined
+  ledger.error = null
   connection = true
 
   /// Try to connect until disconnect() is called or until connection happens.
@@ -196,7 +196,7 @@ ledger.disconnect = async function () {
     disconnection = closeTransport(transport)
     disconnection.then(onDisconnect)
   } else {
-    disconnection = undefined
+    disconnection = null
   }
   reset()
   return disconnection

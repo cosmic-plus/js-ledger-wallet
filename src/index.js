@@ -87,6 +87,8 @@ ledger.connect.path = function (account, index, internalFlag) {
     path = `${BIP_PATH}/${account || 0}'`
     path += internalFlag ? "/1'" : "/0'"
     if (index) path += `/${index}'`
+    console.warn(`index/internalFlag parameters are deprecated & will get removed
+with the next major update. Please use explicit path instead. (e.g. "${path}")`)
   } else {
     if (typeof account === "number") {
       path = `${BIP_PATH}/${account}'`

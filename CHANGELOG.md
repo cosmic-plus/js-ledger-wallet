@@ -20,6 +20,28 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.3.0 - 2019-11-02
+
+### Deprecated
+
+- API: Deprecate `index` & `internalFlag` .connect() parameters. Those
+  parameters were used to construct derivation paths after [BIP44]
+  specifications. However, those are rarely used in Stellar & were removed from
+  this library documentation months ago.
+
+  The new way to specify arbitrary derivation paths is to pass them explicitly
+  (e.g.: "m/44'/148'/1'/2'").
+
+### Added
+
+- API: Add support for arbitrary derivation paths. Example:
+  `ledger.connect("m/44'/255'/5'")`
+
+### Fixed
+
+- Logic: Always use `null` for empty variables. The code was not consistent in
+  its usage of `null` and `undefined`.
+
 ## 1.2.0 - 2019-10-26
 
 ### Changed
@@ -190,3 +212,5 @@ bump only means that this library is public and stable.
 
 There is no changelog for older releases. Please look take a look at [commit
 history](https://github.com/cosmic-plus/js-ledger-wallet/commits/master).
+
+[BIP44]: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki

@@ -1,30 +1,32 @@
 "use strict"
 /**
- * A convenient wrapper around official Ledger Wallet libraries.
+ * This library is a convenient wrapper around the official Ledger libraries for
+ * Stellar:
  *
- * **Usage:**
+ * - [Stellar app API](https://www.npmjs.com/package/@ledgerhq/hw-app-str)
+ * - [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js support
+ * - [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser support
  *
- * async ledgerWallet.connect([accountNumber], [accountIndex], [internalFlag])
- * ledgerWallet.disconnect()
+ * It provides a way to support Ledger Wallets with a few one-liners:
  *
- * // Events
- * ledgerWallet.onConnect => function ()
- * ledgerWallet.onDisconnect => function ()
+ * ```js
+ * // Step 1: Connect
+ * await ledgerWallet.connect()
  *
- * // After connection succeed
- * async ledgerWallet.sign(transaction)
- * ledgerWallet.publicKey
- * ledgerWallet.version
- * ledgerWallet.multiOpsEnabled
- * ledgerWallet.account
- * ledgerWallet.path
- * ledgerWallet.application
- * ledgerWallet.transport
+ * // Step 2: Get public key
+ * const pubkey = ledgerWallet.publicKey
  *
- * // After connection fail
- * ledgerWallet.error
+ * // Step 3: Sign transaction
+ * await ledgerWallet.sign(transaction)
  *
- * @exports ledger
+ * // Extra: Event handlers
+ * ledgerWallet.onConnect = connectionHandler
+ * ledgerWallet.onDisconnect = disconnectionHandler
+ * ```
+ *
+ * This library is compatible with both Node.js and browser environments.
+ *
+ * @exports ledgerWallet
  */
 const ledger = exports
 
@@ -40,31 +42,82 @@ const Transport = env.isBrowser
   ? require("@ledgerhq/hw-transport-u2f").default
   : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
 
-/*
- * Configuration
- */
+/* Configuration */
 const BIP_PATH = "44'/148'"
 
-/**
- * Methods
- */
+/* Properties */
 
+/**
+ * Public key of the connected account.
+ * @var {String}
+ */
+ledger.publicKey = null
+
+/**
+ * Derivation path of the connected account (default: `m/44'/148'/0'`).
+ * @var {String}
+ */
+ledger.path = null
+
+/**
+ * Version of the Stellar application installed on the connected device.
+ * @var {String}
+ */
+ledger.version = null
+
+/**
+ * Whether or not the user accepts to sign transactions without checking them on
+ * the device first. This allows to sign long transactions (10+ ops) that could
+ * normally not be handled by the device memory, but this is insecure.
+ * @var {Boolean}
+ */
+ledger.multiOpsEnabled = null
+
+/**
+ * The Ledger Transport instance. (internal component)
+ * @var {Transport}
+ */
+ledger.transport = null
+
+/**
+ * The Ledger Stellar application instance. (internal component)
+ * @var {StellarApp}
+ */
+ledger.application = null
+
+/* Methods */
 let connection, disconnection
 
 /**
- * Connect
+ * Waits for a connection with the Ledger Wallet application for Stellar. If
+ * **account** is not provided, account 0 is used. The library will stop
+ * listening for a connection if `await ledgerWallet.disconnect()` is called.
+ *
+ * Once the connection is established, you can use `await
+ * ledgerWallet.connect()` again at any time to ensure the device is still
+ * connected.
+ *
+ * When switching to another account, you can `await
+ * ledgerWallet.connect(new_account)` without prior disconnection.
+ *
+ * _Note:_ Account numbering starts at 0 to remain compatible with previous
+ * releases of this library. This will change with the next major release to
+ * be consistent with the Ledger application which starts at account 1.
+ *
+ * @async
+ * @param [account=0] {Number|String} - Either an account number (starts at 0)
+ * or a derivation path (e.g: `m/44'/148'/0'`).
  */
-
 ledger.connect = async function (account = ledger.path, index, internalFlag) {
   const path = ledger.connect.path(account, index, internalFlag)
 
-  /// Be sure disconnection process is finished.
+  // Be sure disconnection process is finished.
   if (disconnection) {
     await disconnection
     disconnection = null
   }
 
-  /// If the bip path is different we need to go through connect() again.
+  // If the bip path is different we need to go through connect() again.
   if (ledger.path !== path) {
     connection = null
     ledger.publicKey = null
@@ -74,7 +127,7 @@ ledger.connect = async function (account = ledger.path, index, internalFlag) {
     ledger.internalFlag = internalFlag || false
   }
 
-  /// Connect & update data only when needed.
+  // Connect & update data only when needed.
   if (!connection) connection = connect()
   return connection
 }
@@ -106,7 +159,7 @@ async function connect () {
   ledger.error = null
   connection = true
 
-  /// Try to connect until disconnect() is called or until connection happens.
+  // Try to connect until disconnect() is called or until connection happens.
   while (connection && !ledger.publicKey) {
     try {
       if (!ledger.transport || env.isNode) {
@@ -115,7 +168,7 @@ async function connect () {
       if (!ledger.application || env.isNode) {
         ledger.application = new StellarApp(ledger.transport)
       }
-      /// Set ledger.publicKey
+      // Set ledger.publicKey
       Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
       await onConnect()
     } catch (error) {
@@ -129,14 +182,17 @@ async function connect () {
 
         throw error
       }
-      /// Have a timeout to avoid spamming application errors.
+      // Have a timeout to avoid spamming application errors.
       await misc.timeout(1000)
     }
   }
 }
 
 /**
- * onConnect
+ * _Function_ to execute on each connection.
+ *
+ * @category event
+ * @var {Function}
  */
 ledger.onConnect = null
 async function onConnect () {
@@ -148,7 +204,10 @@ async function onConnect () {
 }
 
 /**
- * OnDisconnect
+ * _Function_ to execute on each disconnection.
+ *
+ * @category event
+ * @var {Function}
  */
 ledger.onDisconnect = null
 function onDisconnect () {
@@ -157,9 +216,7 @@ function onDisconnect () {
   if (typeof ledger.onDisconnect === "function") ledger.onDisconnect()
 }
 
-/**
- * Polling
- */
+/* Polling */
 const pollingDelay = 500
 let ping = false,
   isPolling = false
@@ -174,7 +231,7 @@ async function polling () {
     refreshAppConfiguration()
     await misc.timeout(pollingDelay)
 
-    /// Timeout
+    // Timeout
     if (
       ping === false
       && (!ledger.transport || ledger.transport.disconnected !== false)
@@ -189,7 +246,7 @@ async function polling () {
 
 async function refreshAppConfiguration () {
   try {
-    /// Refresh ledger.multiOpsEnabled.
+    // Refresh ledger.multiOpsEnabled.
     Object.assign(ledger, await ledger.application.getAppConfiguration())
     ping = true
   } catch (error) {
@@ -198,10 +255,13 @@ async function refreshAppConfiguration () {
 }
 
 /**
- * Disconnect
+ * Close the connection with the Ledger device, or stop waiting for one in case
+ * a connection has not been established yet.
+ *
+ * @async
  */
-
 ledger.disconnect = async function () {
+  // TODO: fix the timing of this function.
   isPolling = false
   const transport = ledger.transport
   if (transport) {
@@ -241,9 +301,15 @@ const libValues = [
 ]
 
 /**
- * Sign
+ * Prompts the user to accept **transaction** using the connected account of
+ * their Ledger Wallet.
+ *
+ * If the user accepts, adds the signature to **transaction**. Else, throws an
+ * error.
+ *
+ * @async
+ * @param transaction {Transaction} A StellarSdk Transaction
  */
-
 ledger.sign = async function (transaction) {
   if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
   const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
@@ -267,6 +333,7 @@ ledger.sign = async function (transaction) {
 /**
  * Device gets locked up while polling. This asynchronous function returns when
  * it is available.
+ * @private
  */
 async function waitDevice () {
   while (ledger.transport && ledger.transport._appAPIlock) {

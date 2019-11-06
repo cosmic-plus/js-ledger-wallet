@@ -12,21 +12,37 @@
 ![Downloads](https://badgen.net/npm/dt/@cosmic-plus/ledger-wallet)
 ![Bundle](https://badgen.net/badgesize/gzip/cosmic-plus/js-ledger-wallet-web/master/ledger-wallet.js?label=bundle)
 
-This is a wrapper around the official Ledger libraries for Stellar:
+Easy Ledger Wallet support for Stellar applications and command line.
+
+## Introduction
+
+This library is a convenient wrapper around the official Ledger libraries for
+Stellar:
 
 - [Stellar app API](https://www.npmjs.com/package/@ledgerhq/hw-app-str)
-- [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js only
-- [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser only
+- [Transport Node HID](https://www.npmjs.com/package/@ledgerhq/hw-transport-node-hid) - Node.js support
+- [Transport U2F](https://www.npmjs.com/package/@ledgerhq/hw-transport-u2f) - Browser support
 
-Ledger wallet support may be a bit tricky to implement because it doesn't
-require the same libraries whether you're on Node.js or in web browser. Also, it
-requires [quite a few lines of
-code](https://github.com/cosmic-plus/js-ledger-wallet/blob/master/src/index.js).
+It provides a way to support Ledger Wallets with a few one-liners:
 
-This library is solving that by loading the right dependencies automatically and
-providing a few simple one-liners.
+```js
+// Step 1: Connect
+await ledgerWallet.connect()
 
-## Install
+// Step 2: Get public key
+const pubkey = ledgerWallet.publicKey
+
+// Step 3: Sign transaction
+await ledgerWallet.sign(transaction)
+
+// Extra: Event handlers
+ledgerWallet.onConnect = connectionHandler
+ledgerWallet.onDisconnect = disconnectionHandler
+```
+
+This library is compatible with both Node.js and browser environments.
+
+## Installation
 
 ### NPM/Yarn
 
@@ -55,71 +71,83 @@ In your HTML page:
 
 _Note:_ For production release it is advised to serve your copy of the library.
 
-## Methods
+## Usage
 
-### await ledgerWallet.connect([account_number])
+### Methods
 
-This will wait for a connection with the Ledger Wallet application for Stellar.
-If _account_number_ is not provided, account 0 will be used. Note that you'll
-have to `ledgerWallet.disconnect()` if you want the library to stop listening
-for a connection.
+#### await ledgerWallet.connect([account])
 
-If at some point you need to make sure that the Ledger Wallet is still
-connected, you can `await ledgerWallet.connect()` again (will re-use previously set _account_number_).
+Waits for a connection with the Ledger Wallet application for Stellar. If
+**account** is not provided, account 0 is used. The library will stop
+listening for a connection if `await ledgerWallet.disconnect()` is called.
 
-If you need to switch to another account, you can directly `await ledgerWallet.connect(new_account_number)` without prior deconnection.
+Once the connection is established, you can use `await ledgerWallet.connect()` again at any time to ensure the device is still
+connected.
 
-### await ledgerWallet.sign(transaction)
+When switching to another account, you can `await ledgerWallet.connect(new_account)` without prior disconnection.
 
-Ask the user to confirm _transaction_ on its Ledger Wallet. If confirmed,
-returns the signed transaction. Else, throw an error.
+_Note:_ Account numbering starts at 0 to remain compatible with previous
+releases of this library. This will change with the next major release to
+be consistent with the Ledger application which starts at account 1.
 
-This method requires that you `ledgerWallet.connect()` first.
+| Param     | Type                 | Default | Description                                                                         |
+| --------- | -------------------- | ------- | ----------------------------------------------------------------------------------- |
+| [account] | `Number` \| `String` | `0`     | Either an account number (starts at 0) or a derivation path (e.g: `m/44'/148'/0'`). |
 
-### ledgerWallet.disconnect()
+#### await ledgerWallet.sign(transaction)
 
-Close the connection with Ledger Wallet Stellar application, or stop listening
-for a connection if none have been established.
+Prompts the user to accept **transaction** using the connected account of
+their Ledger Wallet.
 
-## Events
+If the user accepts, adds the signature to **transaction**. Else, throws an
+error.
 
-### ledgerWallet.onConnect = Function
+| Param       | Type          | Description              |
+| ----------- | ------------- | ------------------------ |
+| transaction | `Transaction` | A StellarSdk Transaction |
 
-_Function_ to execute on connection.
+#### await ledgerWallet.disconnect()
 
-### ledgerWallet.onDisconnect = Function
+Close the connection with the Ledger device, or stop waiting for one in case
+a connection has not been established yet.
 
-_Function_ to execute on disconnection.
+### Events
 
-## Properties
+#### ledgerWallet.onConnect : `function`
 
-Those properties become available once the Ledger device is connected.
+_Function_ to execute on each connection.
 
-### ledgerWallet.publicKey
+#### ledgerWallet.onDisconnect : `function`
 
-Contains the public key of the selected account.
+_Function_ to execute on each disconnection.
 
-### ledgerWallet.path
+### Members
 
-Contains the bip path for the selected account
+#### ledgerWallet.publicKey : `String`
 
-### ledgerWallet.version
+Public key of the connected account.
 
-Ledger Wallet Stellar application version.
+#### ledgerWallet.path : `String`
 
-### ledgerWallet.multiOpsEnabled
+Derivation path of the connected account (default: `m/44'/148'/0'`).
 
-Whether or not user accept to sign transactions without checking them on the
-device first. This allows to sign long transactions that could normally not be
-handled by the device memory, but this is insecure.
+#### ledgerWallet.version : `String`
 
-### ledgerWallet.transport
+Version of the Stellar application installed on the connected device.
 
-The Ledger Transport instance (internal component).
+#### ledgerWallet.multiOpsEnabled : `Boolean`
 
-### ledgerWallet.application
+Whether or not the user accepts to sign transactions without checking them on
+the device first. This allows to sign long transactions (10+ ops) that could
+normally not be handled by the device memory, but this is insecure.
 
-The Ledger Stellar application instance (internal component).
+#### ledgerWallet.transport : `Transport`
+
+The Ledger Transport instance. (internal component)
+
+#### ledgerWallet.application : `StellarApp`
+
+The Ledger Stellar application instance. (internal component)
 
 ## Links
 

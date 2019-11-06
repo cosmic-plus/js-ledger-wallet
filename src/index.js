@@ -86,6 +86,7 @@ ledger.transport = null
 ledger.application = null
 
 /* Methods */
+
 let connection, disconnection
 
 /**
@@ -189,69 +190,33 @@ async function connect () {
 }
 
 /**
- * _Function_ to execute on each connection.
+ * Prompts the user to accept **transaction** using the connected account of
+ * their Ledger Wallet.
  *
- * @category event
- * @var {Function}
- */
-ledger.onConnect = null
-async function onConnect () {
-  // eslint-disable-next-line no-console
-  console.log("Ledger connected")
-  await refreshAppConfiguration()
-  if (typeof ledger.onConnect === "function") ledger.onConnect()
-  if (!isPolling) polling()
-}
-
-/**
- * _Function_ to execute on each disconnection.
+ * If the user accepts, adds the signature to **transaction**. Else, throws an
+ * error.
  *
- * @category event
- * @var {Function}
+ * @async
+ * @param transaction {Transaction} A StellarSdk Transaction
  */
-ledger.onDisconnect = null
-function onDisconnect () {
-  // eslint-disable-next-line no-console
-  console.log("Ledger disconnected")
-  if (typeof ledger.onDisconnect === "function") ledger.onDisconnect()
-}
+ledger.sign = async function (transaction) {
+  if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
+  const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
 
-/* Polling */
-const pollingDelay = 500
-let ping = false,
-  isPolling = false
-async function polling () {
-  // eslint-disable-next-line no-console
-  console.log("Start polling")
-  isPolling = true
-  const thisApplication = ledger.application
-  while (isPolling && thisApplication === ledger.application) {
-    ping = false
-    await waitDevice()
-    refreshAppConfiguration()
-    await misc.timeout(pollingDelay)
+  const app = ledger.application
+  const signatureBase = transaction.signatureBase()
+  await waitDevice()
+  const result = await app.signTransaction(ledger.path, signatureBase)
 
-    // Timeout
-    if (
-      ping === false
-      && (!ledger.transport || ledger.transport.disconnected !== false)
-      && thisApplication === ledger.application
-    ) {
-      await ledger.disconnect()
-    }
-  }
-  // eslint-disable-next-line no-console
-  console.log("Stop polling")
-}
+  const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
+  const hint = keypair.signatureHint()
+  const decorated = new StellarSdk.xdr.DecoratedSignature({
+    hint: hint,
+    signature: result.signature
+  })
+  transaction.signatures.push(decorated)
 
-async function refreshAppConfiguration () {
-  try {
-    // Refresh ledger.multiOpsEnabled.
-    Object.assign(ledger, await ledger.application.getAppConfiguration())
-    ping = true
-  } catch (error) {
-    if (error.currentLock === "signTransaction") ping = true
-  }
+  return transaction
 }
 
 /**
@@ -301,36 +266,6 @@ const libValues = [
 ]
 
 /**
- * Prompts the user to accept **transaction** using the connected account of
- * their Ledger Wallet.
- *
- * If the user accepts, adds the signature to **transaction**. Else, throws an
- * error.
- *
- * @async
- * @param transaction {Transaction} A StellarSdk Transaction
- */
-ledger.sign = async function (transaction) {
-  if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
-  const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
-
-  const app = ledger.application
-  const signatureBase = transaction.signatureBase()
-  await waitDevice()
-  const result = await app.signTransaction(ledger.path, signatureBase)
-
-  const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
-  const hint = keypair.signatureHint()
-  const decorated = new StellarSdk.xdr.DecoratedSignature({
-    hint: hint,
-    signature: result.signature
-  })
-  transaction.signatures.push(decorated)
-
-  return transaction
-}
-
-/**
  * Device gets locked up while polling. This asynchronous function returns when
  * it is available.
  * @private
@@ -338,5 +273,74 @@ ledger.sign = async function (transaction) {
 async function waitDevice () {
   while (ledger.transport && ledger.transport._appAPIlock) {
     await misc.timeout(100)
+  }
+}
+
+/* Events */
+
+/**
+ * _Function_ to execute on each connection.
+ *
+ * @category event
+ * @var {Function}
+ */
+ledger.onConnect = null
+async function onConnect () {
+  // eslint-disable-next-line no-console
+  console.log("Ledger connected")
+  await refreshAppConfiguration()
+  if (typeof ledger.onConnect === "function") ledger.onConnect()
+  if (!isPolling) polling()
+}
+
+/**
+ * _Function_ to execute on each disconnection.
+ *
+ * @category event
+ * @var {Function}
+ */
+ledger.onDisconnect = null
+function onDisconnect () {
+  // eslint-disable-next-line no-console
+  console.log("Ledger disconnected")
+  if (typeof ledger.onDisconnect === "function") ledger.onDisconnect()
+}
+
+/* Polling */
+
+const pollingDelay = 500
+let ping = false,
+  isPolling = false
+async function polling () {
+  // eslint-disable-next-line no-console
+  console.log("Start polling")
+  isPolling = true
+  const thisApplication = ledger.application
+  while (isPolling && thisApplication === ledger.application) {
+    ping = false
+    await waitDevice()
+    refreshAppConfiguration()
+    await misc.timeout(pollingDelay)
+
+    // Timeout
+    if (
+      ping === false
+      && (!ledger.transport || ledger.transport.disconnected !== false)
+      && thisApplication === ledger.application
+    ) {
+      await ledger.disconnect()
+    }
+  }
+  // eslint-disable-next-line no-console
+  console.log("Stop polling")
+}
+
+async function refreshAppConfiguration () {
+  try {
+    // Refresh ledger.multiOpsEnabled.
+    Object.assign(ledger, await ledger.application.getAppConfiguration())
+    ping = true
+  } catch (error) {
+    if (error.currentLock === "signTransaction") ping = true
   }
 }

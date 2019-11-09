@@ -9,10 +9,15 @@
 ![Licence](https://img.shields.io/github/license/cosmic-plus/js-ledger-wallet.svg)
 [![Dependencies](https://badgen.net/david/dep/cosmic-plus/js-ledger-wallet)](https://david-dm.org/cosmic-plus/js-ledger-wallet)
 ![Vulnerabilities](https://snyk.io/test/npm/@cosmic-plus/ledger-wallet/badge.svg)
-![Downloads](https://badgen.net/npm/dt/@cosmic-plus/ledger-wallet)
 ![Bundle](https://badgen.net/badgesize/gzip/cosmic-plus/js-ledger-wallet-web/master/ledger-wallet.js?label=bundle)
+![Downloads](https://badgen.net/npm/dt/@cosmic-plus/ledger-wallet)
 
 Easy Ledger Wallet support for Stellar applications and command line.
+
+(Weekly updates: [Reddit](https://reddit.com/r/cosmic_plus),
+[Twitter](https://twitter.com/cosmic_plus),
+[Keybase](https://keybase.io/team/cosmic_plus),
+[Telegram](https://t.me/cosmic_plus))
 
 ## Introduction
 

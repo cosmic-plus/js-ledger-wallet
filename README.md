@@ -66,7 +66,7 @@ In your HTML page:
 <script src="./bower_components/cosmic-plus-ledger-wallet/ledger-wallet.js"></script>
 ```
 
-### HTML
+### CDN
 
 In your HTML page:
 

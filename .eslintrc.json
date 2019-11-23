@@ -14,9 +14,15 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double", { "allowTemplateLiterals": true }],
     "semi": ["error", "never"],
-    "no-console": ["error", { "allow": ["error", "warn"] }],
+
     "space-before-function-paren": ["error", "always"],
     "no-extra-parens": ["error", "all"],
-    "operator-linebreak": ["error", "before", { "overrides": { "=": "after" } }]
+    "operator-linebreak": [
+      "error",
+      "before",
+      { "overrides": { "=": "after" } }
+    ],
+
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }

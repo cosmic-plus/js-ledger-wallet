@@ -219,4 +219,4 @@ bump only means that this library is public and stable.
 There is no changelog for older releases. Please look take a look at [commit
 history](https://github.com/cosmic-plus/js-ledger-wallet/commits/master).
 
-[BIP44]: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+[bip44]: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki

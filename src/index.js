@@ -111,11 +111,8 @@ let connection, disconnection
 ledger.connect = async function (account = ledger.path, index, internalFlag) {
   const path = ledger.connect.path(account, index, internalFlag)
 
-  // Be sure disconnection process is finished.
-  if (disconnection) {
-    await disconnection
-    disconnection = null
-  }
+  // Wait for disconnection to finish.
+  if (disconnection) await disconnection
 
   // If the bip path is different we need to go through connect() again.
   if (ledger.path !== path) {
@@ -174,7 +171,7 @@ async function connect () {
       // Set ledger.publicKey
       Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
       Object.assign(ledger, await ledger.application.getAppConfiguration())
-      await onConnect()
+      onConnect()
     } catch (error) {
       ledger.error = error
       if (error.id === "U2FNotSupported") {
@@ -225,22 +222,23 @@ ledger.sign = async function (transaction) {
  * @async
  */
 ledger.disconnect = async function () {
-  // TODO: fix the timing of this function.
   const transport = ledger.transport
+  reset()
+
   if (transport) {
     disconnection = closeTransport(transport)
     disconnection.then(onDisconnect)
-  } else {
-    disconnection = null
+    await disconnection
+  } else if (disconnection) {
+    await disconnection
   }
-  reset()
-  return disconnection
+  disconnection = null
 }
 
 async function closeTransport (transport) {
   // If transport is not valid anymore we consider the transport as closed.
   try {
-    transport.close()
+    await transport.close()
   } catch (error) {
     console.error(error)
   }

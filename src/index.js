@@ -207,19 +207,13 @@ async function connect () {
  */
 ledger.sign = async function (transaction) {
   if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
-  const StellarSdk = require("@cosmic-plus/base/es5/stellar-sdk")
 
-  const app = ledger.application
-  const signatureBase = transaction.signatureBase()
-  const result = await app.signTransaction(ledger.path, signatureBase)
-
-  const keypair = StellarSdk.Keypair.fromPublicKey(ledger.publicKey)
-  const hint = keypair.signatureHint()
-  const decorated = new StellarSdk.xdr.DecoratedSignature({
-    hint: hint,
-    signature: result.signature
-  })
-  transaction.signatures.push(decorated)
+  const result = await ledger.application.signTransaction(
+    ledger.path,
+    transaction.signatureBase()
+  )
+  const signature = result.signature.toString("base64")
+  transaction.addSignature(ledger.publicKey, signature)
 
   return transaction
 }

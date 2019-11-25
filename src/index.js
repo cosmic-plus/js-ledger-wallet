@@ -161,7 +161,10 @@ async function connect () {
   connection = true
 
   // Try to connect until disconnect() is called or until connection happens.
+  let startTime
   while (connection && !ledger.publicKey) {
+    startTime = +new Date()
+
     try {
       if (!ledger.transport || env.isNode) {
         ledger.transport = await Transport.create()
@@ -180,11 +183,14 @@ async function connect () {
         const iframeSelector = "iframe[src^=chrome-extension/*/u2f-comms.html]"
         const iframe = document.querySelector(iframeSelector)
         if (iframe) iframe.parentNode.removeChild(iframe)
+      }
 
+      // If error happened within 25 seconds, we throw. Else, we assume a
+      // timeout.
+      const errorTime = +new Date()
+      if (errorTime - startTime < 25000) {
         throw error
       }
-      // Have a timeout to avoid spamming application errors.
-      await misc.timeout(1000)
     }
   }
 }

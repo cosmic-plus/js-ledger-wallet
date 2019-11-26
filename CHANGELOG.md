@@ -20,6 +20,21 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.5.0 - 2019-11-26
+
+### Changed
+
+- Logic: Remove device polling. @cosmic-plus/ledger-wallet included logic for
+  detecting device disconnections. However, this logic was causing alert
+  spamming in some environments. Because there's no way to probe the device
+  without making those messages appear, the only sane solution was to remove
+  this feature.
+
+### Fixed
+
+- Logic: Fix `.connect()` errors handling. The old logic was causing some
+  browsers to spam device requests.
+
 ## 1.4.0 - 2019-11-23
 
 ### Changed

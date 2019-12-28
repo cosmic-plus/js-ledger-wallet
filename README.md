@@ -71,33 +71,32 @@ In your HTML page:
 In your HTML page:
 
 ```HTML
-<script src="https://cdn.cosmic.plus/ledger-wallet@1.x"></script>
+<script src="https://cdn.cosmic.plus/ledger-wallet@2.x"></script>
 ```
 
 _Note:_ For production release it is advised to serve your copy of the library.
 
 ## Usage
 
-### Methods
+### Functions
 
 #### await ledgerWallet.connect([account])
 
 Waits for a connection with the Ledger Wallet application for Stellar. If
-**account** is not provided, account 0 is used. The library will stop
+**account** is not provided, account 1 is used. The library will stop
 listening for a connection if `await ledgerWallet.disconnect()` is called.
 
-Once the connection is established, you can use `await ledgerWallet.connect()` again at any time to ensure the device is still
-connected.
+Once the connection is established, you can use `await ledgerWallet.connect(account)` again at any time to ensure the device is
+still connected.
 
 When switching to another account, you can `await ledgerWallet.connect(new_account)` without prior disconnection.
 
-_Note:_ Account numbering starts at 0 to remain compatible with previous
-releases of this library. This will change with the next major release to
-be consistent with the Ledger application which starts at account 1.
+_Note:_ To stay consistent with the way Trezor numbers accounts, **account**
+starts at 1 (derivation path: `m/44'/148'/0'`).
 
 | Param     | Type                 | Default | Description                                                                         |
 | --------- | -------------------- | ------- | ----------------------------------------------------------------------------------- |
-| [account] | `Number` \| `String` | `0`     | Either an account number (starts at 0) or a derivation path (e.g: `m/44'/148'/0'`). |
+| [account] | `Number` \| `String` | `1`     | Either an account number (starts at 1) or a derivation path (e.g: `m/44'/148'/0'`). |
 
 #### await ledgerWallet.sign(transaction)
 
@@ -115,6 +114,47 @@ error.
 
 Close the connection with the Ledger device, or stop waiting for one in case
 a connection has not been established yet.
+
+#### ledgerWallet.newAccount([horizon])
+
+Connects the first unused account.
+
+_Note:_ merged accounts are considered as used.
+
+| Param     | Type                 | Default                                   | Description                                                                                                       |
+| --------- | -------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [horizon] | `String` \| `Server` | `&quot;https://horizon.stellar.org&quot;` | The Horizon server where to check for account existence. It can be either an URL or a _StellarSdk.Server_ object. |
+
+#### ledgerWallet.scan([params]) ⇒ `Array`
+
+Scans the ledger device for accounts that exist on **params.horizon**. The
+scanning stops after encountering **params.attempts** unused accounts.
+
+Merged accounts are considered as existing accounts and will reset the
+**params.attempts** counter when encountered.
+
+Returns an _Array_ of _Objects_ containing `account` number, `publicKey`,
+`path`, and `state` (either `"open"` or `"merged"`).
+
+| Param                  | Type                 | Default                                   | Description                                                                                                       |
+| ---------------------- | -------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [params]               | `Object`             |                                           | Optional parameters.                                                                                              |
+| [params.horizon]       | `String` \| `Server` | `&quot;https://horizon.stellar.org&quot;` | The Horizon server where to check for account existence. It can be either an URL or a _StellarSdk.Server_ object. |
+| [params.attempts]      | `Number`             | `3`                                       | The number of empty accounts before scanning stops.                                                               |
+| [params.includeMerged] | `Boolean`            | `false`                                   | List merged accounts as well.                                                                                     |
+
+#### ledgerWallet.getPublicKeys([start], [length]) ⇒ `Array`
+
+Request multiple public keys from the Ledger device. The request will return
+**length** accounts, starting by **start** (minimum 1).
+
+Returns an _Array_ of _Objects_ with properties `account`, `publicKey`, and
+`path`.
+
+| Param    | Type     | Default | Description                     |
+| -------- | -------- | ------- | ------------------------------- |
+| [start]  | `Number` | `1`     | Starting account number         |
+| [length] | `Number` | `1`     | Number of account to be listed. |
 
 ### Events
 

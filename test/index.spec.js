@@ -35,7 +35,7 @@ describe("ledgerWallet", () => {
     })
 
     it("sets .path using number", async () => {
-      await ledgerWallet.connect(3)
+      await ledgerWallet.connect(4)
       expect(ledgerWallet.path).toMatch(/^44'\/148'\/3'$/)
     })
 

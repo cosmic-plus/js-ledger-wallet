@@ -90,7 +90,7 @@ let connection, disconnection
 
 /**
  * Waits for a connection with the Ledger Wallet application for Stellar. If
- * **account** is not provided, account 0 is used. The library will stop
+ * **account** is not provided, account 1 is used. The library will stop
  * listening for a connection if `await ledgerWallet.disconnect()` is called.
  *
  * Once the connection is established, you can use `await
@@ -100,16 +100,15 @@ let connection, disconnection
  * When switching to another account, you can `await
  * ledgerWallet.connect(new_account)` without prior disconnection.
  *
- * _Note:_ Account numbering starts at 0 to remain compatible with previous
- * releases of this library. This will change with the next major release to
- * be consistent with the Ledger application which starts at account 1.
+ * _Note:_ To stay consistent with the way Trezor numbers accounts, **account**
+ * starts at 1 (derivation path: `m/44'/148'/0'`).
  *
  * @async
- * @param [account=0] {Number|String} - Either an account number (starts at 0)
+ * @param [account=1] {Number|String} - Either an account number (starts at 1)
  * or a derivation path (e.g: `m/44'/148'/0'`).
  */
 ledger.connect = async function (account = ledger.path) {
-  const path = ledger.connect.path(account == null ? 0 : account)
+  const path = ledger.connect.path(account == null ? 1 : account)
 
   // Wait for disconnection to finish.
   if (disconnection) await disconnection
@@ -128,7 +127,8 @@ ledger.connect = async function (account = ledger.path) {
 
 ledger.connect.path = function (account) {
   if (typeof account === "number") {
-    return `${BIP_PATH}/${account}'`
+    if (account < 1) throw new Error("Account number starts at 1.")
+    return `${BIP_PATH}/${account - 1}'`
   } else {
     return account.replace(/^m\//, "")
   }

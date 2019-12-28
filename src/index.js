@@ -241,6 +241,32 @@ const libValues = [
   "multiOpsEnabled"
 ]
 
+/**
+ * Request multiple public keys from the Ledger device. The request will return
+ * **length** accounts, starting by **start** (minimum 1).
+ *
+ * Returns an _Array_ of _Objects_ with properties `account`, `publicKey`, and
+ * `path`.
+ *
+ * @param {Number} [start=1] - Starting account number
+ * @param {Number} [length=1] - Number of account to be listed.
+ * @return {Array}
+ */
+ledger.getPublicKeys = async function (start = 1, length = 1) {
+  const keys = []
+
+  for (let account = start; account < start + length; account++) {
+    await ledger.connect(account)
+    keys.push({
+      account,
+      publicKey: ledger.publicKey,
+      path: ledger.path
+    })
+  }
+
+  return keys
+}
+
 /* Events */
 
 /**

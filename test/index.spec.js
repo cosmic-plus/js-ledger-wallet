@@ -2,18 +2,22 @@
 "use strict"
 
 const StellarSdk = require("stellar-sdk")
+const { friendbot } = require("@cosmic-plus/base")
+
 const ledgerWallet = require("../src")
+
 const { any } = jasmine
 
 /* Setup */
 
+const horizon = "https://horizon-testnet.stellar.org"
 const xdr =
   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 const tx1 = new StellarSdk.Transaction(xdr, StellarSdk.Networks.TESTNET)
 const tx2 = new StellarSdk.Transaction(xdr, StellarSdk.Networks.TESTNET)
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
 
 /* Specifications */
 
@@ -111,6 +115,32 @@ describe("ledgerWallet", () => {
     })
   })
 
+  describe(".scan()", () => {
+    beforeAll(async () => {
+      // eslint-disable-next-line no-console
+      console.log("Ensure that test accounts exist...")
+      await wantAccount(1)
+      await wantAccount(2)
+      await wantAccount(5)
+      await wantAccount(10)
+    })
+
+    it("scans for accounts (retry: 0)", async () => {
+      const accounts = await ledgerWallet.scan({ horizon, attempts: 1 })
+      expect(accounts).toEqual(testAccounts.slice(0, 2))
+    })
+
+    it("scans for accounts (retry: default = 3)", async () => {
+      const accounts = await ledgerWallet.scan({ horizon })
+      expect(accounts).toEqual(testAccounts.slice(0, 3))
+    })
+
+    it("scans for accounts (retry: 5)", async () => {
+      const accounts = await ledgerWallet.scan({ horizon, attempts: 5 })
+      expect(accounts).toEqual(testAccounts)
+    })
+  })
+
   describe("events", () => {
     it("calls .onConnect on connection", async () => {
       let connect = false
@@ -128,3 +158,20 @@ describe("ledgerWallet", () => {
     })
   })
 })
+
+/* Helpers */
+let testAccounts = []
+
+async function wantAccount (account) {
+  await ledgerWallet.connect(account)
+  await friendbot(ledgerWallet.publicKey).catch(() => null)
+
+  testAccounts.push({
+    account,
+    publicKey: ledgerWallet.publicKey,
+    state: "open",
+    path: ledgerWallet.path
+  })
+
+  await ledgerWallet.disconnect()
+}

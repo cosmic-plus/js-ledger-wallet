@@ -32,33 +32,21 @@ describe("ledgerWallet", () => {
     it("sets .path using default", async () => {
       await ledgerWallet.connect()
       expect(ledgerWallet.path).toMatch(/^44'\/148'\/0'$/)
-      expect(ledgerWallet.account).toBe(0)
-      expect(ledgerWallet.index).toBe(0)
-      expect(ledgerWallet.internalFlag).toBe(false)
     })
 
     it("sets .path using number", async () => {
       await ledgerWallet.connect(3)
       expect(ledgerWallet.path).toMatch(/^44'\/148'\/3'$/)
-      expect(ledgerWallet.account).toBe(3)
-      expect(ledgerWallet.index).toBe(0)
-      expect(ledgerWallet.internalFlag).toBe(false)
     })
 
-    it("sets .path using custom parameters (1)", async () => {
-      await ledgerWallet.connect(2, 1)
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/2'\/0'\/1'$/)
-      expect(ledgerWallet.account).toBe(2)
-      expect(ledgerWallet.index).toBe(1)
-      expect(ledgerWallet.internalFlag).toBe(false)
+    it("sets .path using custom derivation path (1)", async () => {
+      await ledgerWallet.connect("m/44'/148'/2'")
+      expect(ledgerWallet.path).toMatch(/^44'\/148'\/2'$/)
     })
 
-    it("sets .path using custom parameters (2)", async () => {
-      await ledgerWallet.connect(4, 6, true)
+    it("sets .path using custom derivation path (2)", async () => {
+      await ledgerWallet.connect("m/44'/148'/4'/1'/6'")
       expect(ledgerWallet.path).toMatch(/^44'\/148'\/4'\/1'\/6'$/)
-      expect(ledgerWallet.account).toBe(4)
-      expect(ledgerWallet.index).toBe(6)
-      expect(ledgerWallet.internalFlag).toBe(true)
     })
 
     it("sets .publicKey", async () => {

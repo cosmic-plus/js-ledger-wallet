@@ -108,8 +108,8 @@ let connection, disconnection
  * @param [account=0] {Number|String} - Either an account number (starts at 0)
  * or a derivation path (e.g: `m/44'/148'/0'`).
  */
-ledger.connect = async function (account = ledger.path, index, internalFlag) {
-  const path = ledger.connect.path(account, index, internalFlag)
+ledger.connect = async function (account = ledger.path) {
+  const path = ledger.connect.path(account == null ? 0 : account)
 
   // Wait for disconnection to finish.
   if (disconnection) await disconnection
@@ -119,9 +119,6 @@ ledger.connect = async function (account = ledger.path, index, internalFlag) {
     connection = null
     ledger.publicKey = null
     ledger.path = path
-    ledger.account = account || 0
-    ledger.index = index || 0
-    ledger.internalFlag = internalFlag || false
   }
 
   // Connect & update data only when needed.
@@ -129,31 +126,17 @@ ledger.connect = async function (account = ledger.path, index, internalFlag) {
   return connection
 }
 
-ledger.connect.path = function (account, index, internalFlag) {
-  let path
-
-  // Deprecated.
-  if (index || internalFlag) {
-    path = `${BIP_PATH}/${account || 0}'`
-    path += internalFlag ? "/1'" : "/0'"
-    if (index) path += `/${index}'`
-    console.warn(`index/internalFlag parameters are deprecated & will get removed
-with the next major update. Please use explicit path instead. (e.g. "${path}")`)
+ledger.connect.path = function (account) {
+  if (typeof account === "number") {
+    return `${BIP_PATH}/${account}'`
   } else {
-    if (typeof account === "number") {
-      path = `${BIP_PATH}/${account}'`
-    } else {
-      path = account ? account.replace(/^m\//, "") : `${BIP_PATH}/0'`
-    }
+    return account.replace(/^m\//, "")
   }
-
-  return path
 }
 
 async function connect () {
   // eslint-disable-next-line no-console
   console.log("Attempting ledger connection...")
-  ledger.error = null
   connection = true
 
   // Try to connect until disconnect() is called or until connection happens.
@@ -173,7 +156,6 @@ async function connect () {
       Object.assign(ledger, await ledger.application.getAppConfiguration())
       onConnect()
     } catch (error) {
-      ledger.error = error
       if (error.id === "U2FNotSupported") {
         // This frame may show up when using strict Content-Security-Policy
         // See: https://github.com/LedgerHQ/ledgerjs/issues/254
@@ -253,9 +235,6 @@ const libValues = [
   "transport",
   "application",
   "path",
-  "account",
-  "index",
-  "internalFlag",
   "version",
   "publicKey",
   "multiOpsEnabled"

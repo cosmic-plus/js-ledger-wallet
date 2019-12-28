@@ -94,8 +94,8 @@ let connection, disconnection
  * listening for a connection if `await ledgerWallet.disconnect()` is called.
  *
  * Once the connection is established, you can use `await
- * ledgerWallet.connect()` again at any time to ensure the device is still
- * connected.
+ * ledgerWallet.connect(account)` again at any time to ensure the device is
+ * still connected.
  *
  * When switching to another account, you can `await
  * ledgerWallet.connect(new_account)` without prior disconnection.
@@ -107,8 +107,8 @@ let connection, disconnection
  * @param [account=1] {Number|String} - Either an account number (starts at 1)
  * or a derivation path (e.g: `m/44'/148'/0'`).
  */
-ledger.connect = async function (account = ledger.path) {
-  const path = ledger.connect.path(account == null ? 1 : account)
+ledger.connect = async function (account = 1) {
+  const path = ledger.connect.path(account)
 
   // Wait for disconnection to finish.
   if (disconnection) await disconnection

@@ -31,22 +31,22 @@ describe("ledgerWallet", () => {
 
     it("sets .path using default", async () => {
       await ledgerWallet.connect()
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/0'$/)
+      expect(ledgerWallet.path).toMatch(/^m\/44'\/148'\/0'$/)
     })
 
     it("sets .path using number", async () => {
       await ledgerWallet.connect(4)
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/3'$/)
+      expect(ledgerWallet.path).toMatch(/^m\/44'\/148'\/3'$/)
     })
 
     it("sets .path using custom derivation path (1)", async () => {
       await ledgerWallet.connect("m/44'/148'/2'")
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/2'$/)
+      expect(ledgerWallet.path).toMatch(/^m\/44'\/148'\/2'$/)
     })
 
     it("sets .path using custom derivation path (2)", async () => {
       await ledgerWallet.connect("m/44'/148'/4'/1'/6'")
-      expect(ledgerWallet.path).toMatch(/^44'\/148'\/4'\/1'\/6'$/)
+      expect(ledgerWallet.path).toMatch(/^m\/44'\/148'\/4'\/1'\/6'$/)
     })
 
     it("sets .publicKey", async () => {

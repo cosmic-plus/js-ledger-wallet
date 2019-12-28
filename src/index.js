@@ -42,7 +42,7 @@ const Transport = env.isBrowser
   : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
 
 /* Configuration */
-const BIP_PATH = "44'/148'"
+const BIP32_PATH = "m/44'/148'"
 
 /* Properties */
 
@@ -118,9 +118,9 @@ ledger.connect = async function (account = 1) {
 ledger.connect.path = function (account) {
   if (typeof account === "number") {
     if (account < 1) throw new Error("Account number starts at 1.")
-    return `${BIP_PATH}/${account - 1}'`
+    return `${BIP32_PATH}/${account - 1}'`
   } else {
-    return account.replace(/^m\//, "")
+    return account
   }
 }
 
@@ -141,10 +141,13 @@ async function connect (path) {
       if (!ledger.application || env.isNode) {
         ledger.application = new StellarApp(ledger.transport)
       }
-      // Set ledger.publicKey
-      Object.assign(ledger, await ledger.application.getPublicKey(path))
-      Object.assign(ledger, await ledger.application.getAppConfiguration())
+
+      // Set ledger properties
+      const app = ledger.application
+      Object.assign(ledger, await app.getPublicKey(path.replace(/^m\//, "")))
+      Object.assign(ledger, await app.getAppConfiguration())
       ledger.path = path
+
       onConnect()
     } catch (error) {
       if (error.id === "U2FNotSupported") {
@@ -180,7 +183,7 @@ ledger.sign = async function (transaction) {
   if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
 
   const result = await ledger.application.signTransaction(
-    ledger.path,
+    ledger.path.replace(/^m\//, ""),
     transaction.signatureBase()
   )
   const signature = result.signature.toString("base64")

@@ -20,6 +20,44 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.0.0 - 2019-12-28
+
+### Breaking
+
+- API: `.connect()` always connect to account 1. To ensure the device is still
+  connected, code must now explicitly pass the same account parameter than for
+  initialization (e.g: `.connect(4)`). Before `.connect()` was enough but it led
+  to unexpected behavior.
+- API: Account numbering now starts at 1. This is to be consistent with
+  Ledger/Trezor account numbering. Code using `.connect(number)` must be updated
+  accordingly. `.connect()` continues to select `m/44'/148'/0'` as before.
+- API: `.path` is now properly prefixed by `m/`. (e.g.: `m/44'/148'/0'` instead
+  of `44'/148'/0'`)
+
+### Removed
+
+- API: REMOVE deprecated properties & parameters. The following `ledgerWallet`
+  properties have been removed: `.account`, `.index`, `.internalFlag`, and
+  `.error`. The related parameters have been removed from `.connect()`
+  (parameters 2 and 3 are now ignored).
+
+### Added
+
+- API: Add `.newAccount()`. This method connects the first unused account of a
+  Ledger device. ([See
+  documentation](https://cosmic.plus/#view:js-ledger-wallet/%23ledgerwalletnewaccount))
+- API: Add `.scan()`. This method scans for existing accounts on the Ledger
+  device. ([See
+  documentation](https://cosmic.plus/#view:js-ledger-wallet/%23ledgerwalletscan))
+- API: Add `.getPublicKeys()`. This method retrieves multiple public keys at
+  once. ([See
+  documentation](https://cosmic.plus/#view:js-ledger-wallet/%23ledgerwalletgetpublickeys))
+
+### Fixed
+
+- API: Ensure `.path` and `publicKey` are set only when connected.
+- Logic: Fix the timing of `connect()`/`disconnect()`.
+
 ## 1.5.0 - 2019-11-26
 
 ### Changed

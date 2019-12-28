@@ -242,6 +242,25 @@ const libValues = [
 ]
 
 /**
+ * Connects the first unused account.
+ *
+ * _Note:_ merged accounts are considered as used.
+ *
+ * @param {String|Server} [horizon="https://horizon.stellar.org"] - The
+ * Horizon server where to check for account existence. It can be either an URL
+ * or a _StellarSdk.Server_ object.
+ */
+ledger.newAccount = async function (horizon = "https://horizon.stellar.org") {
+  const accounts = await ledger.scan({
+    horizon,
+    attempts: 1,
+    includeMerged: true
+  })
+  const last = accounts[accounts.length - 1]
+  await ledger.connect(last ? last.account + 1 : 1)
+}
+
+/**
  * Scans the ledger device for accounts that exist on **params.horizon**. The
  * scanning stops after encountering **params.attempts** unused accounts.
  *

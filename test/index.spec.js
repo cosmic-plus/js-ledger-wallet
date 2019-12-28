@@ -141,6 +141,22 @@ describe("ledgerWallet", () => {
     })
   })
 
+  describe(".newAccount()", () => {
+    it("connect the next unused account", async () => {
+      const accounts = await ledgerWallet.scan({
+        horizon,
+        attempts: 1,
+        includeMerged: true
+      })
+      const last = accounts[accounts.length - 1]
+      await ledgerWallet.newAccount(horizon)
+
+      const accountIndex = +ledgerWallet.path.replace(/^.*([0-9]+)'/, "$1")
+      if (last) expect(accountIndex).toEqual(last.account)
+      else expect(accountIndex).toEqual(0)
+    })
+  })
+
   describe("events", () => {
     it("calls .onConnect on connection", async () => {
       let connect = false

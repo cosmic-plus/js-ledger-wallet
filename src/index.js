@@ -109,19 +109,9 @@ let connection, disconnection
  */
 ledger.connect = async function (account = 1) {
   const path = ledger.connect.path(account)
-
-  // Wait for disconnection to finish.
   if (disconnection) await disconnection
-
-  // If the bip path is different we need to go through connect() again.
-  if (ledger.path !== path) {
-    connection = null
-    ledger.publicKey = null
-    ledger.path = path
-  }
-
-  // Connect & update data only when needed.
-  if (!connection) connection = connect()
+  if (ledger.path && ledger.path !== path) softReset()
+  if (!connection) connection = connect(path)
   return connection
 }
 
@@ -134,7 +124,7 @@ ledger.connect.path = function (account) {
   }
 }
 
-async function connect () {
+async function connect (path) {
   // eslint-disable-next-line no-console
   console.log("Attempting ledger connection...")
   connection = true
@@ -152,8 +142,9 @@ async function connect () {
         ledger.application = new StellarApp(ledger.transport)
       }
       // Set ledger.publicKey
-      Object.assign(ledger, await ledger.application.getPublicKey(ledger.path))
+      Object.assign(ledger, await ledger.application.getPublicKey(path))
       Object.assign(ledger, await ledger.application.getAppConfiguration())
+      ledger.path = path
       onConnect()
     } catch (error) {
       if (error.id === "U2FNotSupported") {
@@ -168,6 +159,7 @@ async function connect () {
       // timeout.
       const errorTime = +new Date()
       if (errorTime - startTime < 25000) {
+        softReset()
         throw error
       }
     }
@@ -224,6 +216,12 @@ async function closeTransport (transport) {
   } catch (error) {
     console.error(error)
   }
+}
+
+function softReset () {
+  connection = null
+  ledger.path = null
+  ledger.publicKey = null
 }
 
 function reset () {

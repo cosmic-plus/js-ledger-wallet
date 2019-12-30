@@ -32,10 +32,6 @@ const ledger = exports
 
 const env = require("@cosmic-plus/jsutils/es5/env")
 
-if (env.isNode) {
-  global.regeneratorRuntime = env.nodeRequire("regenerator-runtime")
-}
-
 const StellarApp = require("@ledgerhq/hw-app-str").default
 const Transport = env.isBrowser
   ? require("@ledgerhq/hw-transport-u2f").default

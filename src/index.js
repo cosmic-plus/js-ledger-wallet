@@ -31,6 +31,7 @@
 const ledger = exports
 
 const env = require("@cosmic-plus/jsutils/es5/env")
+const { timeout } = require("@cosmic-plus/jsutils/es5/misc")
 
 const StellarApp = require("@ledgerhq/hw-app-str").default
 const Transport = env.isBrowser
@@ -154,12 +155,20 @@ async function connect (path) {
         if (iframe) iframe.parentNode.removeChild(iframe)
       }
 
-      // If error happened within 25 seconds, we throw. Else, we assume a
-      // timeout.
-      const errorTime = +new Date()
-      if (errorTime - startTime < 25000) {
+      // Keep looping over timeout/non-connected/non-opened app errors.
+      const ellapsed = +new Date() - startTime
+      if (
+        // Firefox user cancels.
+        error.id === "U2F_1"
+        // Chrome/Win user cancels.
+        || error.id === "U2F_4" && ellapsed < 25000
+      ) {
         softReset()
+        error.message = "Connexion invite cancelled"
         throw error
+      } else if (ellapsed < 8000) {
+        // Prevent blocking message loops in potentially unhandled cases.
+        await timeout(8000 - ellapsed)
       }
     }
   }

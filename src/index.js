@@ -101,7 +101,7 @@ let connection, disconnection
  * starts at 1 (derivation path: `m/44'/148'/0'`).
  *
  * @async
- * @param [account=1] {Number|String} - Either an account number (starts at 1)
+ * @param {Number|String} [account=1] - Either an account number (starts at 1)
  * or a derivation path (e.g: `m/44'/148'/0'`).
  */
 ledger.connect = async function (account = 1) {
@@ -182,7 +182,7 @@ async function connect (path) {
  * error.
  *
  * @async
- * @param transaction {Transaction} A StellarSdk Transaction
+ * @param {Transaction} transaction - A StellarSdk Transaction
  */
 ledger.sign = async function (transaction) {
   if (!ledger.publicKey) throw new Error("No ledger wallet connected.")
@@ -251,7 +251,7 @@ const libValues = [
  *
  * _Note:_ merged accounts are considered as used.
  *
- * @param {String|Server} [horizon="https://horizon.stellar.org"] - The
+ * @param {String|Server} [horizon=https://horizon.stellar.org] - The
  * Horizon server where to check for account existence. It can be either an URL
  * or a _StellarSdk.Server_ object.
  */
@@ -276,7 +276,7 @@ ledger.newAccount = async function (horizon = "https://horizon.stellar.org") {
  * `path`, and `state` (either `"open"` or `"merged"`).
  *
  * @param {Object} [params] - Optional parameters.
- * @param {String|Server} [params.horizon="https://horizon.stellar.org"] - The
+ * @param {String|Server} [params.horizon=https://horizon.stellar.org] - The
  * Horizon server where to check for account existence. It can be either an URL
  * or a _StellarSdk.Server_ object.
  * @param {Number} [params.attempts=3] - The number of empty accounts before

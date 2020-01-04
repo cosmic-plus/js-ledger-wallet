@@ -20,6 +20,17 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.1.0 - 2020-01-04
+
+### Changed
+
+- Logic: Upgrade @ledgerhq libraries to 5.x. This saves 16KiB or more when the
+  library gets bundled.
+- Logic: Improve device waiting. This should prevent errors due to device not
+  being ready yet without re-introducing the invite spamming issue. If there's
+  still issues in specific environments, please let me know on
+  Keybase#cosmic_plus.
+
 ## 2.0.1 - 2019-12-29
 
 ### Chore

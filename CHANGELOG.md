@@ -20,6 +20,13 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.2.0 - 2020-02-01
+
+### Changed
+
+- Logic: Update @ledger libraries to 5.7.x. (dependencies updates, better
+  errors)
+
 ## 2.1.0 - 2020-01-04
 
 ### Changed

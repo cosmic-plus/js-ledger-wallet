@@ -60,7 +60,7 @@
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "@cosmic-plus/base": "^2.6.0",
-    "@cosmic-plus/jsutils": "^2.0.2",
+    "@kisbox/helpers": "^1.0.0-beta.10",
     "@ledgerhq/hw-app-str": "^5.13.1",
     "@ledgerhq/hw-transport-node-hid": "^5.13.1",
     "@ledgerhq/hw-transport-u2f": "^5.13.1"

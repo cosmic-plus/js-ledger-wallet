@@ -30,13 +30,12 @@
  */
 const ledger = exports
 
-const env = require("@cosmic-plus/jsutils/es5/env")
-const { timeout } = require("@cosmic-plus/jsutils/es5/misc")
+const { isNode, nodeRequire, timeout } = require("@kisbox/helpers")
 
 const StellarApp = require("@ledgerhq/hw-app-str").default
-const Transport = env.isBrowser
-  ? require("@ledgerhq/hw-transport-u2f").default
-  : env.nodeRequire("@ledgerhq/hw-transport-node-hid").default
+const Transport = isNode
+  ? nodeRequire("@ledgerhq/hw-transport-node-hid").default
+  : require("@ledgerhq/hw-transport-u2f").default
 
 /* Configuration */
 const BIP32_PATH = "m/44'/148'"
@@ -132,10 +131,10 @@ async function connect (path) {
     startTime = +new Date()
 
     try {
-      if (!ledger.transport || env.isNode) {
+      if (!ledger.transport || isNode) {
         ledger.transport = await Transport.create()
       }
-      if (!ledger.application || env.isNode) {
+      if (!ledger.application || isNode) {
         ledger.application = new StellarApp(ledger.transport)
       }
 

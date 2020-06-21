@@ -20,6 +20,16 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.4.0 - 2020-06-21
+
+### Changed
+
+- Meta: Switch to `@kisbox/helpers`.
+
+### Fixed
+
+- Meta: Remove redundant dependency.
+
 ## 2.3.0 - 2020-04-18
 
 ### Changed

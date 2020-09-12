@@ -61,8 +61,8 @@
     "@babel/runtime": "^7.10.3",
     "@cosmic-plus/base": "^2.8.0",
     "@kisbox/helpers": "^1.0.0-beta.11",
-    "@ledgerhq/hw-app-str": "^5.17.0",
-    "@ledgerhq/hw-transport-node-hid": "^5.17.0",
-    "@ledgerhq/hw-transport-u2f": "^5.17.0"
+    "@ledgerhq/hw-app-str": "^5.23.0",
+    "@ledgerhq/hw-transport-node-hid": "^5.23.2",
+    "@ledgerhq/hw-transport-u2f": "^5.22.0"
   }
 }

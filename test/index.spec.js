@@ -93,7 +93,7 @@ describe("ledgerWallet", () => {
         .then(() => {
           return new Error("Did not throw an error")
         })
-        .catch(error => expect(error).toEqual(any(Error)))
+        .catch((error) => expect(error).toEqual(any(Error)))
     })
   })
 

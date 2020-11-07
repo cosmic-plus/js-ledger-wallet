@@ -233,7 +233,7 @@ function softReset () {
 
 function reset () {
   connection = null
-  libValues.forEach(key => ledger[key] = null)
+  libValues.forEach((key) => ledger[key] = null)
 }
 
 const libValues = [

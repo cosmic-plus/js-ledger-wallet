@@ -8,6 +8,7 @@
   "license": "MIT",
   "main": "src/index.js",
   "module": "es5/index.js",
+  "browserslist": "extends @kisbox/browserslist-config",
   "keywords": [
     "stellar",
     "hardware",
@@ -51,6 +52,7 @@
     "@babel/core": "^7.11.6",
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
+    "@kisbox/browserslist-config": "^1.0.0-beta.17",
     "eslint": "^7.13.0",
     "jasmine": "^3.6.1",
     "prettier": "^2.1.2",
@@ -63,6 +65,7 @@
     "@kisbox/helpers": "^1.0.0-beta.11",
     "@ledgerhq/hw-app-str": "^5.23.0",
     "@ledgerhq/hw-transport-node-hid": "^5.23.2",
-    "@ledgerhq/hw-transport-u2f": "^5.22.0"
+    "@ledgerhq/hw-transport-u2f": "^5.22.0",
+    "core-js": "^3.7.0"
   }
 }

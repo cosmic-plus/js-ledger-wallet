@@ -1,6 +1,6 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "Easy Ledger Wallet support for Stellar applications and command line",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "homepage": "https://cosmic.plus/#view:js-ledger-wallet",
@@ -48,24 +48,24 @@
     "publish-release": "npm run check && npm run tag-release && npm run push-release && npm publish"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@kisbox/browserslist-config": "^1.0.0-beta.17",
-    "eslint": "^7.13.0",
+    "eslint": "^7.17.0",
     "jasmine": "^3.6.3",
-    "prettier": "^2.1.2",
+    "prettier": "^2.2.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@cosmic-plus/base": "^2.9.0",
-    "@kisbox/helpers": "^1.0.0-beta.17",
+    "@cosmic-plus/base": "^2.10.0",
+    "@kisbox/helpers": "^1.0.0-beta.19",
     "@ledgerhq/hw-app-str": "^5.38.0",
     "@ledgerhq/hw-transport-node-hid": "^5.38.0",
     "@ledgerhq/hw-transport-u2f": "^5.34.0",
-    "core-js": "^3.7.0"
+    "core-js": "^3.8.2"
   }
 }

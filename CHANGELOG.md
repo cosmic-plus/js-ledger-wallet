@@ -20,6 +20,12 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.7.0 - 2021-01-08
+
+### Changed
+
+- Logic: Update Ledger libraries to 5.38.x.
+
 ## 2.6.0 - 2020-11-08
 
 ### Changed

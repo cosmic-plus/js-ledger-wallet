@@ -20,6 +20,13 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 2.8.0 - 2021-09-17
+
+### Changed
+
+- Meta: Update dependencies.
+- Meta: Update @legderhq libraries to 6.x.
+
 ## 2.7.0 - 2021-01-08
 
 ### Changed

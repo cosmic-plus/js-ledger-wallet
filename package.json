@@ -1,6 +1,6 @@
 {
   "name": "@cosmic-plus/ledger-wallet",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Easy Ledger Wallet support for Stellar applications and command line",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "homepage": "https://cosmic.plus/#view:js-ledger-wallet",
@@ -55,13 +55,14 @@
     "@kisbox/browserslist-config": "^1.0.0-beta.21",
     "eslint": "^7.32.0",
     "jasmine": "^3.9.0",
-    "prettier": "^2.4.0",
+    "prettier": "^2.4.1",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "@cosmic-plus/base": "^2.10.0",
+    "@cosmic-plus/base": "^2.11.0",
+    "@cosmic-plus/helpers": "^1.1.0",
     "@kisbox/helpers": "^1.0.0-beta.21",
     "@ledgerhq/hw-app-str": "^6.3.0",
     "@ledgerhq/hw-transport-node-hid": "^6.6.0",
